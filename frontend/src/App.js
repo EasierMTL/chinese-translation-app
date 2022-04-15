@@ -1,4 +1,4 @@
-import Translate from "./services/Translate";
+import Translate from "./views/Translate";
 
 function App() {
   return <Translate></Translate>;
