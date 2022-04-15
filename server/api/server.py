@@ -1,3 +1,5 @@
+"""The server entrypoint
+"""
 import os
 from typing import List
 from fastapi import FastAPI
@@ -6,11 +8,13 @@ from api.routes import router
 
 
 def get_origins() -> List[str]:
+    """configures cors based on the environment
+    """
     env = os.environ.get("ENV_TYPE")
-    isProd = env == "production"
+    is_prod = env == "production"
 
-    if isProd:
-        origins = ["https://earthquakedamageforecast.com/"]
+    if is_prod:
+        origins = ["https://chinesetranslationapi.com/"]
     else:
         origins = [
             "http://localhost",
@@ -28,13 +32,16 @@ def get_application(api_prefix: str) -> FastAPI:
 
     application = FastAPI()
 
-    application.add_middleware(
-        CORSMiddleware,
-        allow_origins=get_origins(),
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+    deploy_type = os.environ.get("DEPLOY_TYPE")
+    # Only add cors when we're deploying on an app
+    if deploy_type == "app":
+        application.add_middleware(
+            CORSMiddleware,
+            allow_origins=get_origins(),
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
 
     application.include_router(router.router, prefix=api_prefix)
 
