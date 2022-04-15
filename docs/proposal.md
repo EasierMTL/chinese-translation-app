@@ -43,7 +43,9 @@ For the aforementioned 3 models, we will also separately run inference on the sa
 
 ![](images/ui.png)
 
-Currently, we have a basic demo deployed on Digital Ocean with a corresponding UI: https://chinesetranslationapi.com/. The source code is here: https://github.com/jchen42703/chinese-translation-api.
+Currently, we have a basic demo deployed on Digital Ocean with a corresponding UI: https://chinesetranslationapi.com/.
+
+The source code is here: https://github.com/jchen42703/chinese-translation-api.
 
 **Models:**
 
