@@ -26,7 +26,12 @@ const ToTranslateTextArea = ({ inputMode }) => {
   };
 
   useEffect(() => {
-    translate();
+    // Debounce to prevent 8000 requests in a row
+    const timeoutID = setTimeout(() => {
+      translate();
+    }, 1500);
+
+    return () => clearTimeout(timeoutID);
   }, [editorState.getCurrentContent().getPlainText()]);
 
   return (

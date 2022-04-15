@@ -16,7 +16,7 @@ poetry install
 To start the api:
 
 ```
-poetry run uvicorn api.server:app --workers 1 --reload
+poetry run uvicorn api.server:app --workers 1 --reload --port=5000
 ```
 
 ## Build

@@ -2,17 +2,16 @@
 
 ## Getting Started
 
-To run the backend, do:
-
-```
-cd server
-poetry config virtualenvs.in-project true
-poetry install
-poetry run gunicorn api.server:app --workers 2
-```
+See the individual READMEs in `frontend` and `server`.
 
 ## Build
 
+```bash
+# for building repeatedly when debugging
+docker-compose build --no-cache
+
+# running
+docker-compose up -d
 ```
-docker-compose up
-```
+
+I

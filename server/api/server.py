@@ -15,12 +15,12 @@ def get_origins() -> List[str]:
 
     if is_prod:
         origins = [
-            "https://chinesetranslationapi.com/", "http://localhost:3006"
+            "https://chinesetranslationapi.com/",
+            "http://localhost:3006",
         ]
     else:
         origins = [
-            "http://localhost",
-            "http://localhost:3006",
+            "http://localhost", "http://localhost:3006", "http://localhost:3000"
         ]
     print("origins: ", origins)
     return origins
@@ -36,14 +36,14 @@ def get_application(api_prefix: str) -> FastAPI:
 
     deploy_type = os.environ.get("DEPLOY_TYPE")
     # Only add cors when we're deploying on an app
-    if deploy_type == "cors":
-        application.add_middleware(
-            CORSMiddleware,
-            allow_origins=get_origins(),
-            allow_credentials=True,
-            allow_methods=["*"],
-            allow_headers=["*"],
-        )
+    # if deploy_type == "cors":
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=get_origins(),
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     application.include_router(router.router, prefix=api_prefix)
 
