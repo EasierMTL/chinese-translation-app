@@ -18,3 +18,21 @@ To start the api:
 ```
 poetry run uvicorn api.server:app --workers 1 --reload
 ```
+
+## Build
+
+```
+poetry export -f requirements.txt --output requirements.txt
+```
+
+Build docker:
+
+```
+docker build -t chinese_translation_server .
+```
+
+Run docker:
+
+```
+docker run -d --name translation_server_container -p 8000:5001 chinese_translation_server
+```

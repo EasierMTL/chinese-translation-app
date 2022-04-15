@@ -12,6 +12,7 @@ pydantic = "^1.9.0"
 torch = "^1.11.0"
 uvicorn = "^0.17.6"
 sentencepiece = "^0.1.96"
+boto3 = "^1.21.40"
 
 [tool.poetry.dev-dependencies]
 gunicorn = "^20.1.0"

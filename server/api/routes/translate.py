@@ -46,6 +46,7 @@ zh_translator = ChineseToEnglishTranslator()
 async def run_prediction(req: ChineseTextToTranslateReq) -> JSONResponse:
     """Runs the model prediction
     """
+    print(req)
     prediction = zh_translator.predict(req.text)
     return {'prediction': prediction}
 

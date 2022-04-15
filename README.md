@@ -10,3 +10,9 @@ poetry config virtualenvs.in-project true
 poetry install
 poetry run gunicorn api.server:app --workers 2
 ```
+
+## Build
+
+```
+docker-compose up
+```
