@@ -14,7 +14,7 @@ def get_origins() -> List[str]:
     else:
         origins = [
             "http://localhost",
-            "http://localhost:3000",
+            "http://localhost:3006",
         ]
     print("origins: ", origins)
     return origins
