@@ -11,6 +11,5 @@ services:
     build: ./server
     environment:
       - ENV_TYPE=production
-      - DEPLOY_TYPE=app
     ports:
       - "5001:5001"

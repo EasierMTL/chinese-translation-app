@@ -36,7 +36,7 @@ def get_application(api_prefix: str) -> FastAPI:
 
     deploy_type = os.environ.get("DEPLOY_TYPE")
     # Only add cors when we're deploying on an app
-    if deploy_type == "app":
+    if deploy_type == "cors":
         application.add_middleware(
             CORSMiddleware,
             allow_origins=get_origins(),
