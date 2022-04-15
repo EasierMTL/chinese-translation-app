@@ -14,7 +14,9 @@ def get_origins() -> List[str]:
     is_prod = env == "production"
 
     if is_prod:
-        origins = ["https://chinesetranslationapi.com/"]
+        origins = [
+            "https://chinesetranslationapi.com/", "http://localhost:3006"
+        ]
     else:
         origins = [
             "http://localhost",
