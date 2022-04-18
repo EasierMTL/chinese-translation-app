@@ -36,14 +36,14 @@ def get_application(api_prefix: str) -> FastAPI:
 
     deploy_type = os.environ.get("DEPLOY_TYPE")
     # Only add cors when we're deploying on an app
-    # if deploy_type == "cors":
-    application.add_middleware(
-        CORSMiddleware,
-        allow_origins=get_origins(),
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+    if deploy_type != "server":
+        application.add_middleware(
+            CORSMiddleware,
+            allow_origins=get_origins(),
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
 
     application.include_router(router.router, prefix=api_prefix)
 

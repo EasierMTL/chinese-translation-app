@@ -33,6 +33,10 @@ docker build -t chinese_translation_server .
 
 Run docker:
 
-```
-docker run -d --name translation_server_container -p 8000:5001 chinese_translation_server
+```bash
+# regular
+docker run -d --name translation_server_container -p 5001:5001 chinese_translation_server
+
+# with env
+docker build -t chinese_translation_server . && docker run -e ENV_TYPE="production" -e DEPLOY_TYPE="server" --name translation_server_container_deploy -p 5001:5001 chinese_translation_server
 ```
