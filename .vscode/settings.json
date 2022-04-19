@@ -3,7 +3,7 @@
   "python.linting.enabled": true,
   "python.linting.pylintPath": "pylint",
   "python.linting.pylintEnabled": true,
-  "python.formatting.provider": "yapf",
+  "python.formatting.provider": "black",
   "python.formatting.yapfArgs": [
     "--style={based_on_style: google, column_limit: 80, indent_width: 4}"
   ],
