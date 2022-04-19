@@ -1,4 +1,3 @@
-import os
 import sys
 import argparse
 from instance import Instance
@@ -9,7 +8,7 @@ class AWSCmd(object):
 
     def build_argument_parser(self):
         """Build arguments"""
-        help_text = "Specify client type (eg. EC2) followed by action"
+        help_text = "Specify service type (eg. EC2) followed by action"
 
         parser = argparse.ArgumentParser()
 

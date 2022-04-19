@@ -11,13 +11,13 @@ class Instance:
     """Control AWS EC2 instances"""
 
     def __init__(self, instance_type, instance_id):
-        self.ec2 = boto3.client(instance_type)
+        self.service_type = boto3.client(instance_type)
         self.instance_id = instance_id
 
     def reboot(self):
         """Reboot EC2 instance"""
         try:
-            res = self.ec2.reboot_instances(InstanceIds=[self.instance_id])
+            res = self.service_type.reboot_instances(InstanceIds=[self.instance_id])
             print("Rebooted instance!", res)
         except ClientError as e:
             print(e.response["Error"]["Message"])
@@ -25,7 +25,7 @@ class Instance:
     def start(self):
         """Start EC2 instance"""
         try:
-            res = self.ec2.start_instances(
+            res = self.service_type.start_instances(
                 InstanceIds=[self.instance_id], AdditionalInfo="string"
             )
             print("Starting Instance!", res)
@@ -35,7 +35,7 @@ class Instance:
     def stop(self):
         """Stop EC2 instance"""
         try:
-            res = self.ec2.stop_instances(InstanceIds=[self.instance_id])
+            res = self.service_type.stop_instances(InstanceIds=[self.instance_id])
             print("Stopping Instance!", res)
         except ClientError as e:
             print(e.response["Error"]["Message"])
