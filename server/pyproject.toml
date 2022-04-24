@@ -13,7 +13,6 @@ torch = "^1.11.0"
 uvicorn = "^0.17.6"
 sentencepiece = "^0.1.96"
 boto3 = "^1.21.40"
-botocore = "^1.24.43"
 optimum = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
