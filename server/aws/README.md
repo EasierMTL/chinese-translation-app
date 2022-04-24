@@ -22,6 +22,7 @@ Default output format [None]: json
 The CLI allows you to start, stop, and reboot. You need to specify `instance_type` (eg. EC2) followed by the `instance_id` associated with it.
 
 Create instance (no args need to be passed): 
+
 `python3 aws_cmd.py`
 
 Start instance:
