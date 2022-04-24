@@ -1,22 +1,43 @@
-from optimum.onnxruntime.configuration import AutoQuantizationConfig
-from optimum.onnxruntime import ORTQuantizer
+import torch
+import torch.quantization
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 
-def create_quantized_model(
-    onnx_model_path: str,
-    onnx_optimized_model_output_path: str,
-    model_name: str = "Helsinki-NLP/opus-mt-zh-en",
-    feature: str = "AutoModelForSeq2SeqLM",
-):
-    """Creates the graph optimized model
+def create_quantized_model():
+    """Creates the chinese to english quantized model.
     """
-    # The type of quantization to apply
-    qconfig = AutoQuantizationConfig.arm64(is_static=False, per_channel=False)
-    quantizer = ORTQuantizer.from_pretrained(model_name, feature=feature)
 
-    # Quantize the model!
-    quantizer.export(
-        onnx_model_path=onnx_model_path,
-        onnx_optimized_model_output_path=onnx_optimized_model_output_path,
-        quantization_config=qconfig,
-    )
+    model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-zh-en")
+    quantized_model = torch.quantization.quantize_dynamic(model,
+                                                          {torch.nn.Linear},
+                                                          dtype=torch.qint8)
+    return quantized_model
+
+
+def create_save_quantized_model(save_path: str):
+    """Create and save quantized CH to English model
+    """
+    quantized_model = create_quantized_model()
+    quantized_model.eval()
+    torch.save(quantized_model, save_path)
+    return quantized_model
+
+
+if __name__ == "__main__":
+    # poetry run python api/models/quantized.py
+    print("Creating quantized model...")
+    create_save_quantized_model("./saved_models/quantized_translator.pt")
+    print("Loading and predicting an example batch...")
+    tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-zh-en")
+    quantized_model = torch.load("./saved_models/quantized_translator.pt")
+
+    def predict_quantized(message):
+        """Runs the prediction pipeline.
+        """
+        inputs = tokenizer(message, return_tensors="pt")
+        translated = quantized_model.generate(**inputs)
+        translated_text = tokenizer.batch_decode(translated,
+                                                 skip_special_tokens=True)[0]
+        return translated_text
+
+    print(predict_quantized("我爱ecse484."))
