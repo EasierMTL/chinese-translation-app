@@ -70,7 +70,7 @@ def main():
     if len(sys.argv) > 1:
         aws_cmd.aws_action()
     else:
-        print("No arguments given!")
+        aws_cmd.create_instance()
 
 
 if __name__ == "__main__":
