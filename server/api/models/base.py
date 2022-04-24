@@ -1,19 +1,23 @@
-"""Base models with no optimization applied.
+"""Base translator classes.
 """
+import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 
 class ChineseToEnglishTranslator(object):
-    """Template inference object
+    """Inference object for chinese to english translation.
     """
 
-    def __init__(self):
+    def __init__(self, model_path: str = None):
         # English to Chinese: https://huggingface.co/Helsinki-NLP/opus-mt-en-zh
         self.tokenizer = AutoTokenizer.from_pretrained(
             "Helsinki-NLP/opus-mt-zh-en")
 
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(
-            "Helsinki-NLP/opus-mt-zh-en")
+        if (model_path == None):
+            self.model = AutoModelForSeq2SeqLM.from_pretrained(
+                "Helsinki-NLP/opus-mt-zh-en")
+        else:
+            self.model = torch.load(model_path)
 
     def predict(self, message):
         """Runs the prediction pipeline.
@@ -29,13 +33,16 @@ class EnglishToChineseTranslator:
     """English to Chinese Translator
     """
 
-    def __init__(self):
+    def __init__(self, model_path: str = None):
         # English to Chinese: https://huggingface.co/Helsinki-NLP/opus-mt-en-zh
         self.tokenizer = AutoTokenizer.from_pretrained(
             "Helsinki-NLP/opus-mt-en-zh")
 
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(
-            "Helsinki-NLP/opus-mt-en-zh")
+        if (model_path == None):
+            self.model = AutoModelForSeq2SeqLM.from_pretrained(
+                "Helsinki-NLP/opus-mt-en-zh")
+        else:
+            self.model = torch.load(model_path)
 
     def predict(self, message):
         """Runs the prediction pipeline.
