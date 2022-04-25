@@ -1,3 +1,4 @@
+from multiprocessing import Lock
 from multiprocessing.pool import ThreadPool
 from datasets import load_metric
 from chinese_translation_api.models.base import Predictor
@@ -57,7 +58,11 @@ class EvaluationPipeline:
         print("Example batch:\n", self.test_ch[0], self.test_labels[0])
 
     @track
-    def evaluate(self, max_samples=10000, num_workers=1, sentence_bleu=True):
+    def evaluate(self,
+                 max_samples=10000,
+                 num_workers=1,
+                 sentence_bleu=True,
+                 print_bleu_every: int = 100):
         """Runs prediction on entire dataset and calculates the corpus BLEU.
         """
         num_samples = len(self.test_ch)
@@ -67,6 +72,9 @@ class EvaluationPipeline:
         combined_data = zip(self.test_ch[:max_samples],
                             self.test_labels[:max_samples])
         all_results = []
+
+        predictions = []
+        references = []
 
         if (sentence_bleu):
 
@@ -82,18 +90,29 @@ class EvaluationPipeline:
         else:
 
             bleu = load_metric("bleu")
+            lock = Lock()
 
             def process_data(args):
                 pred = self.predictor.predict(args[0]).split(" ")
                 # Pretty sure label[1].split(" ") was the base model prediction...
                 # processed_labels = [label[0].split(" "), label[1].split(" ")]
                 processed_labels = args[1].split(" ")
-                bleu.add_batch(predictions=[pred],
-                               references=[[processed_labels]])
+                lock.acquire()
+                # bleu.add_batch(predictions=[pred],
+                #                references=[[processed_labels]])
+                predictions.append(pred)
+                references.append([processed_labels])
+                lock.release()
 
         t = ThreadPool(num_workers)
+        counter = 0
         for _ in tqdm(t.imap_unordered(process_data, list(combined_data)),
                       total=len(list(combined_data))):
+            counter += 1
+            if (counter % print_bleu_every == 0 and counter != max_samples):
+                results = bleu.compute(predictions=predictions,
+                                       references=references)
+                print(f"\nBLEU at {counter}: {results['bleu']}")
             pass
         t.close()
         t.join()
@@ -110,5 +129,6 @@ class EvaluationPipeline:
             with open('results.json', 'w') as f:
                 json.dump(all_results, f)
         else:
-            results = bleu.compute()
+            results = bleu.compute(predictions=predictions,
+                                   references=references)
             print("Results:\n", results)

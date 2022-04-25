@@ -78,3 +78,5 @@ The average sentence BLEU was only slightly less (0.221), but the model evaluati
 The previous experiment used average sentence BLEU and they averaged around 0.22. However, this value was much lower than the official BLEU reported on the page (~0.35). The reason may be that the BLEU was calculated corpus level.
 
 I then added support for that and ran the experiments with 6 workers for 10k samples:
+
+![](images/corpus_bleu_quantized.png)
