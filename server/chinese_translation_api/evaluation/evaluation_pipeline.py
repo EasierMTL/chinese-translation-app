@@ -2,6 +2,7 @@ from multiprocessing.pool import ThreadPool
 from datasets import load_metric
 from chinese_translation_api.models.base import Predictor
 from chinese_translation_api.evaluation.debug_memory import track
+from tqdm import tqdm
 
 
 def chunks(lst, n):
@@ -72,8 +73,11 @@ class EvaluationPipeline:
             bleu.add(predictions=pred, references=processed_labels)
 
         t = ThreadPool(num_workers)
-        t.map(process_data, combined_data)
+        for _ in tqdm(t.imap_unordered(process_data, list(combined_data)),
+                      total=len(list(combined_data))):
+            pass
         t.close()
+        t.join()
 
         # calculate BLEU
         results = bleu.compute()
