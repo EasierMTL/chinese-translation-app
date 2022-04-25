@@ -64,3 +64,7 @@ The fix was that the test set given also contained the machine translations from
 ![](images/reg_bleu.png)
 
 The average sentence BLEU was much more realistic (0.228).
+
+![](images/quantized_bleu.png)
+
+The average sentence BLEU was only slightly less (0.221), but the model evaluation was almost 15 minutes faster! That's approximately a 32% increase speed for only a 3% decrease in performance.
