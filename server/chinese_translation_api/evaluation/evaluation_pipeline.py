@@ -3,6 +3,7 @@ from datasets import load_metric
 from chinese_translation_api.models.base import Predictor
 from chinese_translation_api.evaluation.debug_memory import track
 from tqdm import tqdm
+import json
 
 
 def chunks(lst, n):
@@ -62,15 +63,18 @@ class EvaluationPipeline:
         if (num_samples < max_samples):
             raise IndexError(f"max_samples must be <= {num_samples}")
 
-        bleu = load_metric("bleu")
         combined_data = zip(self.test_ch[:max_samples],
                             self.test_labels[:max_samples])
+        all_results = []
 
         def process_data(args):
+            bleu = load_metric("bleu")
             pred = self.predictor.predict(args[0]).split(" ")
             label = args[1]
             processed_labels = [label[0].split(" "), label[1].split(" ")]
-            bleu.add(predictions=pred, references=processed_labels)
+            results = bleu.compute(predictions=[pred],
+                                   references=[processed_labels])
+            all_results.append(results)
 
         t = ThreadPool(num_workers)
         for _ in tqdm(t.imap_unordered(process_data, list(combined_data)),
@@ -80,5 +84,12 @@ class EvaluationPipeline:
         t.join()
 
         # calculate BLEU
-        results = bleu.compute()
-        print("Results:\n", results)
+        avg_bleu = 0
+        for result in all_results:
+            avg_bleu += result["bleu"]
+        avg_bleu = avg_bleu / len(all_results)
+
+        print("Average BLEU:\n", avg_bleu)
+
+        with open('results.json', 'w') as f:
+            json.dump(all_results, f)
