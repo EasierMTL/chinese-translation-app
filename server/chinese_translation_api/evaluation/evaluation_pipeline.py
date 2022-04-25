@@ -54,16 +54,20 @@ class EvaluationPipeline:
         print("Example batch:\n", self.test_ch[0], self.test_labels[0])
 
     @track
-    def evaluate(self, batch_size: int = 8):
+    def evaluate(self, max_samples=10000):
         """Runs prediction on entire dataset and calculates the corpus BLEU.
         """
+        num_samples = len(self.test_ch)
+        if (num_samples < max_samples):
+            raise IndexError(f"max_samples must be <= {num_samples}")
+
         bleu = load_metric("bleu")
-        batched_input = chunks(self.test_ch, batch_size)
-        batched_labels = chunks(self.test_labels, batch_size)
-        for batch, label_batch in tqdm(zip(batched_input, batched_labels),
-                                       total=len(batched_input)):
-            pred_batch = self.predictor.predict(batch)
-            bleu.add_batch(pred_batch, label_batch)
+        for sample, label in tqdm(zip(self.test_ch[:max_samples],
+                                      self.test_labels[:max_samples]),
+                                  total=len(self.test_ch[:max_samples])):
+            pred = self.predictor.predict(sample).split(" ")
+            processed_labels = [label[0].split(" "), label[1].split(" ")]
+            bleu.add(predictions=pred, references=processed_labels)
 
         # calculate BLEU
         results = bleu.compute()
