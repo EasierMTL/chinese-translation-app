@@ -1,6 +1,6 @@
+from multiprocessing.pool import ThreadPool
 from datasets import load_metric
-from chinese_translation_api.models.base import ChineseToEnglishTranslator, Predictor
-from tqdm import tqdm
+from chinese_translation_api.models.base import Predictor
 from chinese_translation_api.evaluation.debug_memory import track
 
 
@@ -54,7 +54,7 @@ class EvaluationPipeline:
         print("Example batch:\n", self.test_ch[0], self.test_labels[0])
 
     @track
-    def evaluate(self, max_samples=10000):
+    def evaluate(self, max_samples=10000, num_workers=1):
         """Runs prediction on entire dataset and calculates the corpus BLEU.
         """
         num_samples = len(self.test_ch)
@@ -62,12 +62,18 @@ class EvaluationPipeline:
             raise IndexError(f"max_samples must be <= {num_samples}")
 
         bleu = load_metric("bleu")
-        for sample, label in tqdm(zip(self.test_ch[:max_samples],
-                                      self.test_labels[:max_samples]),
-                                  total=len(self.test_ch[:max_samples])):
-            pred = self.predictor.predict(sample).split(" ")
+        combined_data = zip(self.test_ch[:max_samples],
+                            self.test_labels[:max_samples])
+
+        def process_data(args):
+            pred = self.predictor.predict(args[0]).split(" ")
+            label = args[1]
             processed_labels = [label[0].split(" "), label[1].split(" ")]
             bleu.add(predictions=pred, references=processed_labels)
+
+        t = ThreadPool(num_workers)
+        t.map(process_data, combined_data)
+        t.close()
 
         # calculate BLEU
         results = bleu.compute()
