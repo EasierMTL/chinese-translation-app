@@ -5,9 +5,8 @@ from chinese_translation_api.evaluation.debug_memory import track
 
 
 def chunks(lst, n):
-    """Yield successive n-sized chunks from lst."""
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+    """Yield a list of n-sized chunks from lst."""
+    return [lst[i:i + n] for i in range(0, len(lst), n)]
 
 
 class EvaluationPipeline:
@@ -62,7 +61,7 @@ class EvaluationPipeline:
         batched_input = chunks(self.test_ch, batch_size)
         batched_labels = chunks(self.test_labels, batch_size)
         for batch, label_batch in tqdm(zip(batched_input, batched_labels),
-                                       len=len(batched_input)):
+                                       total=len(batched_input)):
             pred_batch = self.predictor.predict(batch)
             bleu.add_batch(pred_batch, label_batch)
 

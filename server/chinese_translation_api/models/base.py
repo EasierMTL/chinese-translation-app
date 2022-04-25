@@ -7,7 +7,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 class Predictor:
 
-    def predict_batch(self, message: List[str]) -> str:
+    def predict(self, message: List[str]) -> str:
         raise NotImplementedError()
 
 
@@ -31,13 +31,6 @@ class ChineseToEnglishTranslator(Predictor):
         """Runs the prediction pipeline.
         """
         inputs = self.tokenizer(message, return_tensors="pt")
-        translated = self.model.generate(**inputs)
-        translated_text = self.tokenizer.batch_decode(
-            translated, skip_special_tokens=True)[0]
-        return translated_text
-
-    def predict_batch(self, message_batch: List[str]) -> str:
-        inputs = self.tokenizer(message_batch, return_tensors="pt")
         translated = self.model.generate(**inputs)
         translated_text = self.tokenizer.batch_decode(
             translated, skip_special_tokens=True)[0]
