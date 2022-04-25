@@ -1,6 +1,5 @@
 """Base translator classes.
 """
-from typing import List
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
@@ -20,7 +19,7 @@ class ChineseToEnglishTranslator(Predictor):
         self.tokenizer = AutoTokenizer.from_pretrained(
             "Helsinki-NLP/opus-mt-zh-en")
 
-        if (model_path == None):
+        if (model_path is None):
             self.model = AutoModelForSeq2SeqLM.from_pretrained(
                 "Helsinki-NLP/opus-mt-zh-en")
             print("Loaded default model")
