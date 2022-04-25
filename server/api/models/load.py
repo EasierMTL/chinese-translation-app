@@ -2,11 +2,12 @@ from enum import Enum
 import os
 import gdown
 
-
-class SupportedModelLinks(Enum):
-    """Links to the google drive download links for each model
-    """
-    QUANTIZED = "1Bhd2B3UoUuIr9hQROLsqhpzUp3-1vL12"
+model_params = {
+    "quantize_dynamic": {
+        "file_id": "1Bhd2B3UoUuIr9hQROLsqhpzUp3-1vL12",
+        "save_path": "dynamic_quantized.pt"
+    }
+}
 
 
 def download_model(save_path: str, file_id: str):
@@ -17,4 +18,4 @@ def download_model(save_path: str, file_id: str):
 
 if __name__ == "__main__":
     download_model(os.path.join("saved_models", "quantized.pt"),
-                   SupportedModelLinks.QUANTIZED.value)
+                   model_params["quantize_dynamic"]["file_id"])

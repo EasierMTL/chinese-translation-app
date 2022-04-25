@@ -6,10 +6,11 @@ from pydantic import BaseModel
 from fastapi import APIRouter
 import os
 from api.models.base import ChineseToEnglishTranslator, EnglishToChineseTranslator
+from api.models.load import SupportedModelIds, download_model, model_params
 
 
-def create_translator_router(deploy_type: str = "server"):
-    router = APIRouter()
+def create_translator_router(deploy_type: str = "server",
+                             model_type: str = None):
 
     class ChineseTextToTranslateReq(BaseModel):
         """Chinese to english  translation request body
@@ -20,7 +21,11 @@ def create_translator_router(deploy_type: str = "server"):
             """example docs"""
             schema_extra = {"example": {"text": "我爱ECSE484"}}
 
-    zh_translator = ChineseToEnglishTranslator()
+    router = APIRouter()
+    if (model_type != None):
+        model_path = model_params[model_type]["save_path"]
+        download_model(model_path, model_params[model_type]["file_id"])
+    zh_translator = ChineseToEnglishTranslator(model_path)
 
     @router.post("/translate/chinese")
     async def run_prediction(req: ChineseTextToTranslateReq) -> JSONResponse:
