@@ -7,7 +7,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 class Predictor:
 
-    def predict(self, message: List[str]) -> str:
+    def predict(self, message: str) -> str:
         raise NotImplementedError()
 
 
