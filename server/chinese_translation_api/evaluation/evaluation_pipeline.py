@@ -46,7 +46,8 @@ class EvaluationPipeline:
         i = 0
         while (i < len(newLines)):
             ch_line = newLines[i]
-            eng_labels = [newLines[i + 1], newLines[i + 2]]
+            eng_labels = newLines[i + 1]
+            # newLines[i + 2] is just the base model's prediction
 
             self.test_ch.append(ch_line)
             self.test_labels.append(eng_labels)
@@ -70,10 +71,11 @@ class EvaluationPipeline:
         def process_data(args):
             bleu = load_metric("bleu")
             pred = self.predictor.predict(args[0]).split(" ")
-            label = args[1]
-            processed_labels = [label[0].split(" "), label[1].split(" ")]
+            # Pretty sure label[1].split(" ") was the base model prediction...
+            # processed_labels = [label[0].split(" "), label[1].split(" ")]
+            processed_labels = args[1].split(" ")
             results = bleu.compute(predictions=[pred],
-                                   references=[processed_labels])
+                                   references=[[processed_labels]])
             all_results.append(results)
 
         t = ThreadPool(num_workers)

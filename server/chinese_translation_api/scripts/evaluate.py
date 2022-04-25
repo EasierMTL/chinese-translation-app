@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     current_time = now.strftime("%H:%M:%S")
     print("Current Time =", current_time)
-    pipeline.evaluate(max_samples=200, num_workers=6)
+    pipeline.evaluate(max_samples=10, num_workers=2)
 
     after = datetime.now()
     after_time = after.strftime("%H:%M:%S")
