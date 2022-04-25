@@ -56,3 +56,11 @@ However, I still ended up getting absurdly good results:
 - This was a red flag that I had data leakage.
 
 So, I decided to try a different test set from a different year.
+
+That didn't work.
+
+The fix was that the test set given also contained the machine translations from the model as the second reference. By only calculating BLEU with the first reference:
+
+![](images/reg_bleu.png)
+
+The average sentence BLEU was much more realistic (0.228).

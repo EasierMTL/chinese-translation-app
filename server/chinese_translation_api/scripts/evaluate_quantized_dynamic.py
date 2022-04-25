@@ -10,6 +10,7 @@ if __name__ == "__main__":
     translator.model = torch.quantization.quantize_dynamic(translator.model,
                                                            {torch.nn.Linear},
                                                            dtype=torch.qint8)
+    print("Loaded quantized model")
     pipeline = EvaluationPipeline(predictor=translator)
     pipeline.load_dset("./test_data/opus-2020-07-17.test.txt")
 
@@ -17,7 +18,7 @@ if __name__ == "__main__":
 
     current_time = now.strftime("%H:%M:%S")
     print("Current Time =", current_time)
-    pipeline.evaluate(max_samples=10, num_workers=2)
+    pipeline.evaluate(num_workers=4)
 
     after = datetime.now()
     after_time = after.strftime("%H:%M:%S")
