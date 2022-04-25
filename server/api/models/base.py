@@ -16,6 +16,7 @@ class ChineseToEnglishTranslator(object):
         if (model_path == None):
             self.model = AutoModelForSeq2SeqLM.from_pretrained(
                 "Helsinki-NLP/opus-mt-zh-en")
+            print("Loaded default model")
         else:
             self.model = torch.load(model_path)
 

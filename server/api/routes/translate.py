@@ -4,9 +4,8 @@
 from starlette.responses import JSONResponse
 from pydantic import BaseModel
 from fastapi import APIRouter
-import os
 from api.models.base import ChineseToEnglishTranslator, EnglishToChineseTranslator
-from api.models.load import SupportedModelIds, download_model, model_params
+from api.models.load import download_model, model_params
 
 
 def create_translator_router(deploy_type: str = "server",
@@ -22,8 +21,9 @@ def create_translator_router(deploy_type: str = "server",
             schema_extra = {"example": {"text": "我爱ECSE484"}}
 
     router = APIRouter()
+    model_path = None if model_type == None else model_params[model_type][
+        "save_path"]
     if (model_type != None):
-        model_path = model_params[model_type]["save_path"]
         download_model(model_path, model_params[model_type]["file_id"])
     zh_translator = ChineseToEnglishTranslator(model_path)
 
@@ -55,3 +55,5 @@ def create_translator_router(deploy_type: str = "server",
             """
             prediction = en_translator.predict(req.text)
             return {'prediction': prediction}
+
+    return router
