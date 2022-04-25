@@ -20,6 +20,8 @@ class ChineseToEnglishTranslator(object):
         else:
             self.model = torch.load(model_path)
 
+        self.model.eval()
+
     def predict(self, message):
         """Runs the prediction pipeline.
         """
