@@ -1,5 +1,5 @@
-from api.models.base import ChineseToEnglishTranslator
-from api.evaluation.evaluation_pipeline import EvaluationPipeline
+from chinese_translation_api.models.base import ChineseToEnglishTranslator
+from chinese_translation_api.evaluation.evaluation_pipeline import EvaluationPipeline
 
 if __name__ == "__main__":
     translator = ChineseToEnglishTranslator()

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 import os
-from api.routes import translate
+from chinese_translation_api.routes import translate
 
 router = APIRouter()
 

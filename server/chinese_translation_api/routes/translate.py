@@ -4,8 +4,8 @@
 from starlette.responses import JSONResponse
 from pydantic import BaseModel
 from fastapi import APIRouter
-from api.models.base import ChineseToEnglishTranslator, EnglishToChineseTranslator
-from api.models.load import download_model, model_params
+from chinese_translation_api.models.base import ChineseToEnglishTranslator, EnglishToChineseTranslator
+from chinese_translation_api.models.load import download_model, model_params
 
 
 def create_translator_router(deploy_type: str = "server",

@@ -1,7 +1,7 @@
 from datasets import load_metric
-from api.models.base import ChineseToEnglishTranslator, Predictor
+from chinese_translation_api.models.base import ChineseToEnglishTranslator, Predictor
 from tqdm import tqdm
-from api.evaluation.debug_memory import track
+from chinese_translation_api.evaluation.debug_memory import track
 
 
 def chunks(lst, n):

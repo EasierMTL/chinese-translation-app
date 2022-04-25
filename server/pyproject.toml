@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "chinese-translation-api"
+name = "chinese_translation_api"
 version = "0.1.0"
 description = ""
 authors = ["Joseph Chen <jchen42703@gmail.com>"]

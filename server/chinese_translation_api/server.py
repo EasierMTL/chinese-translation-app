@@ -4,7 +4,7 @@ import os
 from typing import List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.routes import router
+from chinese_translation_api.routes import router
 
 
 def get_origins() -> List[str]:
