@@ -79,4 +79,14 @@ The previous experiment used average sentence BLEU and they averaged around 0.22
 
 I then added support for that and ran the experiments with 6 workers for 10k samples:
 
+The base model:
+
+![](images/corpus_bleu_base.png)
+
+The quantized model:
+
 ![](images/corpus_bleu_quantized.png)
+
+Again, you can see that the quantized model only marginally worse (~3% worse) than the base model, but was much quicker (more than 25% faster).
+
+Nevertheless, I was not able to reproduce the 0.35 BLEU for the base model (although it was much closer this time).
