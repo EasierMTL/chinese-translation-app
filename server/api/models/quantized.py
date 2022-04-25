@@ -23,21 +23,31 @@ def create_save_quantized_model(save_path: str):
     return quantized_model
 
 
+# wget https://raw.githubusercontent.com/Helsinki-NLP/Tatoeba-Challenge/master/data/test/eng-zho/test.txt
+
+# def traced_quantized_model(save_path: str):
+#     base_shape = [1, None]
+#     input
+
 if __name__ == "__main__":
     # poetry run python api/models/quantized.py
     print("Creating quantized model...")
-    create_save_quantized_model("./saved_models/quantized_translator.pt")
+    quantized_model_path = "./quantized_translator.pt"
+    create_save_quantized_model(quantized_model_path)
     print("Loading and predicting an example batch...")
     tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-zh-en")
-    quantized_model = torch.load("./saved_models/quantized_translator.pt")
+    model = torch.load(quantized_model_path)
 
     def predict_quantized(message):
         """Runs the prediction pipeline.
         """
         inputs = tokenizer(message, return_tensors="pt")
-        translated = quantized_model.generate(**inputs)
+        print(inputs)
+        print(inputs["input_ids"].shape)
+        translated = model.generate(**inputs)
         translated_text = tokenizer.batch_decode(translated,
                                                  skip_special_tokens=True)[0]
         return translated_text
 
     print(predict_quantized("我爱ecse484."))
+    # print(predict_quantized("我爱ecse484.我爱math."))
