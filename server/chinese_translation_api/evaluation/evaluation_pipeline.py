@@ -57,7 +57,7 @@ class EvaluationPipeline:
         print("Example batch:\n", self.test_ch[0], self.test_labels[0])
 
     @track
-    def evaluate(self, max_samples=10000, num_workers=1):
+    def evaluate(self, max_samples=10000, num_workers=1, sentence_bleu=True):
         """Runs prediction on entire dataset and calculates the corpus BLEU.
         """
         num_samples = len(self.test_ch)
@@ -68,15 +68,28 @@ class EvaluationPipeline:
                             self.test_labels[:max_samples])
         all_results = []
 
-        def process_data(args):
+        if (sentence_bleu):
+
+            def process_data(args):
+                bleu = load_metric("bleu")
+                pred = self.predictor.predict(args[0]).split(" ")
+                # Pretty sure label[1].split(" ") was the base model prediction...
+                # processed_labels = [label[0].split(" "), label[1].split(" ")]
+                processed_labels = args[1].split(" ")
+                results = bleu.compute(predictions=[pred],
+                                       references=[[processed_labels]])
+                all_results.append(results)
+        else:
+
             bleu = load_metric("bleu")
-            pred = self.predictor.predict(args[0]).split(" ")
-            # Pretty sure label[1].split(" ") was the base model prediction...
-            # processed_labels = [label[0].split(" "), label[1].split(" ")]
-            processed_labels = args[1].split(" ")
-            results = bleu.compute(predictions=[pred],
-                                   references=[[processed_labels]])
-            all_results.append(results)
+
+            def process_data(args):
+                pred = self.predictor.predict(args[0]).split(" ")
+                # Pretty sure label[1].split(" ") was the base model prediction...
+                # processed_labels = [label[0].split(" "), label[1].split(" ")]
+                processed_labels = args[1].split(" ")
+                bleu.add_batch(predictions=[pred],
+                               references=[[processed_labels]])
 
         t = ThreadPool(num_workers)
         for _ in tqdm(t.imap_unordered(process_data, list(combined_data)),
@@ -86,12 +99,16 @@ class EvaluationPipeline:
         t.join()
 
         # calculate BLEU
-        avg_bleu = 0
-        for result in all_results:
-            avg_bleu += result["bleu"]
-        avg_bleu = avg_bleu / len(all_results)
+        if (sentence_bleu):
+            avg_bleu = 0
+            for result in all_results:
+                avg_bleu += result["bleu"]
+            avg_bleu = avg_bleu / len(all_results)
 
-        print("Average BLEU:\n", avg_bleu)
+            print("Average BLEU:\n", avg_bleu)
 
-        with open('results.json', 'w') as f:
-            json.dump(all_results, f)
+            with open('results.json', 'w') as f:
+                json.dump(all_results, f)
+        else:
+            results = bleu.compute()
+            print("Results:\n", results)

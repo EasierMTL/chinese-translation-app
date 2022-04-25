@@ -65,6 +65,16 @@ The fix was that the test set given also contained the machine translations from
 
 The average sentence BLEU was much more realistic (0.228).
 
+- Note: This was done with 10k samples and 4 workers
+
 ![](images/quantized_bleu.png)
 
 The average sentence BLEU was only slightly less (0.221), but the model evaluation was almost 15 minutes faster! That's approximately a 32% increase speed for only a 3% decrease in performance.
+
+- Note: This was done with the same parameters as the previous experiment.
+
+## Corpus Level BLEU
+
+The previous experiment used average sentence BLEU and they averaged around 0.22. However, this value was much lower than the official BLEU reported on the page (~0.35). The reason may be that the BLEU was calculated corpus level.
+
+I then added support for that and ran the experiments with 6 workers for 10k samples:

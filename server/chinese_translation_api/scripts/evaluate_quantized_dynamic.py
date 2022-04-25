@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     current_time = now.strftime("%H:%M:%S")
     print("Current Time =", current_time)
-    pipeline.evaluate(num_workers=4)
+    pipeline.evaluate(num_workers=4, sentence_bleu=False)
 
     after = datetime.now()
     after_time = after.strftime("%H:%M:%S")
