@@ -1,6 +1,10 @@
 # ECSE 484: Optimizing Chinese Translation Deep Learning Models in Production
 
-Joseph Chen & Benson Jin
+Joseph Chen (jxc1598@case.edu)
+
+Benson Jin (bxj155@case.edu)
+
+https://github.com/jchen42703/chinese-translation-api
 
 # Introduction
 
@@ -75,6 +79,42 @@ A more detailed report of our evaluation blunders and eventually fixes are docum
 
 # Results: Load Testing an API in Production
 
+We deployed our FastAPI api to AWS EC2 instances through CLI and Docker. Requests were served through an nginx reverse proxy. The specific aws and deploy scripts are located in the `/server/aws` directory and nginx configurations are located in the `/server/nginx` directory.
+
+The API serves POST requests like:
+
+![](images/aws.png)
+
+We load tested two versions of the API separately (one with the base BERT and one with the quantized model) with Locust.
+
+Our locust configuration is located in the `server/loadtest` directory. For the experiments below, we mimiced the traffic of 100 users over the course of 15 minutes. The statistics and metrics from the Locust dashboards are shown below.
+
+## No Quantization
+
+![](images/base/locust_stats.png)
+
+![](images/base/locust_req_sec.png)
+
+## With Quantization
+
+![](images/quantized/locust_stats.png)
+
+![](images/quantized/locust_req_sec_correct.png)
+
+## Observations
+
+The base `BERT` only served `2656 requests /(15 minutes * 60 seconds) = 2.95` requests per second on average, while the quantized model served `5406 requests /(15 minutes * 60 seconds) = 6` requests per second on average. This was a more than 100% increase in performance by using the quantized model. This makes sense since the quantized model is much smaller than the base model (200mb vs 297 mb and 33 million parameters vs 119 million parameters).
+
+## Conclusions and Further Research
+
 ![](images/cpu.png)
 
-# Conclusion
+Although our experimental results were successful, the overall performance of our API was subpar. With only one user, the latency of the API was 500ms. With over 100 users, the latency was around 30 seconds for the base model and 13 seconds for the quantized model. In production, this is really slow (even without any caching).
+
+We suspect that a reason for this lack of performance is due to us using a fairly low spec'd server (t3.large only has 8 GB of RAM with 2 cores). You can even tell by the screenshot above that both workers are blasting the CPUs at 100%, but the actual total memory consumed is only 16%. We could look towards load testing on a heavier server that has more cores to leverage the extra RAM.
+
+Nevertheless, we were still able to build a quantized model that was able to perform quicker than the base model for a relatively negligible loss in performance. This performance held up both in evaluation scripts and in production.
+
+P.S. Feel free to play around with our models @ https://chinesetranslationapi.com/.
+
+- It's a much smaller server because we're broke college students, but it works.
