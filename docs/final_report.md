@@ -18,6 +18,7 @@ We decided to test if dynamic quantization would make BERT "perform better" in p
 
 - inference speed
 - BLEU (how well the models translate the chinese text)
+  - We chose BLEU over "better" metrics, such as SacreBLEU, because BLEU one of the most widely used metrics and it was used by the original pretrained BERT.
 - speed in production
 
 The dynamic quantization was done through pure PyTorch. Originally, we also planned on experimenting with operation fusion quantization, but due to time constraints, we could not get a working version out.
@@ -36,7 +37,41 @@ We also employed specific performance boosting techniques such as:
 
 We tested with a `t2.large` AWS EC2 instance.
 
-# Results: Evaluation
+# Results: Evaluation (BLEU)
+
+## Sentence BLEU
+
+At first, we decided to evaluate the BLEU of each sentence and predicted translation of said sentence by each model and then average the BLEUs.
+
+The following evaluation pipelines were run locally on the same machine with 4 workers and 10,000 test samples.
+
+**For the base pretrained BERT:**
+
+![](../server/chinese_translation_api/scripts/images/reg_bleu.png)
+
+**For the quantized BERT:**
+
+![](../server/chinese_translation_api/scripts/images/quantized_bleu.png)
+
+The average sentence BLEU of the quantized model was only slightly less (0.221), but the model evaluation was almost 15 minutes faster! That's approximately a 32% increase speed for only a 3% decrease in performance. This was a very good sign that the quantized model would be better suited for production purposes.
+
+## Corpus BLEU
+
+You can immediately tell that the BLEU is quite low (< 0.3). The official BLEU for our pretrained model is 0.356 (https://github.com/Helsinki-NLP/Tatoeba-Challenge/tree/master/models/zho-eng). Hence, we felt that our evaluation strategy was incorrect. Upon further research, we decided to try a corpus wide BLEU evaluation. That means we accumulate all of the references and predictions and evaluate the BLEU all at once. This approach is actually the recommended way for calculating BLEU (since it was designed to be a corpus-wide evaluation metric).
+
+(Ignore the intermediate BLEU scores, those were only corpus BLEUs calculated for sanity purposes)
+
+**For the base pretrained BERT:**
+
+![](../server/chinese_translation_api/scripts/images/corpus_bleu_base.png)
+
+**For the quantized BERT:**
+
+![](../server/chinese_translation_api/scripts/images/corpus_bleu_quantized.png)
+
+Again, you can see that the quantized model only marginally worse (~3% worse) than the base model, but was much quicker (more than 25% faster than the regular BERT).
+
+A more detailed report of our evaluation blunders and eventually fixes are documented here: https://github.com/jchen42703/chinese-translation-api/blob/main/server/chinese_translation_api/scripts/EVALUATION_REG.md.
 
 # Results: Load Testing an API in Production
 
