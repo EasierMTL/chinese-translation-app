@@ -14,7 +14,7 @@ cd ~/chinese/server
 sudo docker build -t chinese_translation_server .
 
 # Regular
-sudo docker run -d -e ENV_TYPE="production" -e DEPLOY_TYPE="server" --name translation_server_container_deploy -p 5001:5001 chinese_translation_server
+sudo docker run -d -e ENV_TYPE="production" -e DEPLOY_TYPE="server" -e NUM_WORKERS=8 --name translation_server_container_deploy -p 5001:5001 chinese_translation_server
 
 # Quantized
-# sudo docker run -d -e ENV_TYPE="production" -e DEPLOY_TYPE="server" MODEL_TYPE="quantized_dynamic" --name translation_server_container_deploy -p 5001:5001 chinese_translation_server
+# sudo docker run -d -e ENV_TYPE="production" -e DEPLOY_TYPE="server" -e NUM_WORKERS=8 MODEL_TYPE="quantized_dynamic" --name translation_server_container_deploy -p 5001:5001 chinese_translation_server
