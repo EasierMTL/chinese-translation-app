@@ -51,11 +51,11 @@ The following evaluation pipelines were run locally on the same machine with 4 w
 
 **For the base pretrained BERT:**
 
-![](../server/chinese_translation_api/scripts/images/reg_bleu.png)
+![](images/reg_bleu.png)
 
 **For the quantized BERT:**
 
-![](../server/chinese_translation_api/scripts/images/quantized_bleu.png)
+![](images/quantized_bleu.png)
 
 The average sentence BLEU of the quantized model was only slightly less (0.221), but the model evaluation was almost 15 minutes faster! That's approximately a 32% increase speed for only a 3% decrease in performance. This was a very good sign that the quantized model would be better suited for production purposes.
 
@@ -67,11 +67,11 @@ You can immediately tell that the BLEU is quite low (< 0.3). The official BLEU f
 
 **For the base pretrained BERT:**
 
-![](../server/chinese_translation_api/scripts/images/corpus_bleu_base.png)
+![](images/corpus_bleu_base.png)
 
 **For the quantized BERT:**
 
-![](../server/chinese_translation_api/scripts/images/corpus_bleu_quantized.png)
+![](images/corpus_bleu_quantized.png)
 
 Again, you can see that the quantized model only marginally worse (~3% worse) than the base model, but was much quicker (more than 25% faster than the regular BERT).
 
