@@ -3,8 +3,11 @@
 import os
 from typing import List
 from fastapi import FastAPI
+import torch
 from fastapi.middleware.cors import CORSMiddleware
 from chinese_translation_api.routes import router
+
+torch.set_num_threads(1)
 
 
 def get_origins() -> List[str]:
