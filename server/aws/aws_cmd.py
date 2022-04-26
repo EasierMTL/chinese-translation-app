@@ -68,22 +68,25 @@ class AWSCmd(object):
 
         # shell script to run on start
         user_data = """#!/bin/bash
-        yum update -y
-        amazon-linux-extras install docker
-        service docker start
+        apt-get update 
+        apt install nginx -y
+        ufw allow 'Nginx HTTP'
+        ufw allow 'Nginx HTTPS'
+        apt install docker.io -y
+        snap install docker
         systemctl enable docker
-        yum install git -y
+        docker --version
+        apt-get install git
         git clone https://github.com/jchen42703/chinese-translation-api.git chinese
-        cd /chinese/server
+        cd chinese/server
         docker build -t chinese_translation_server .
         docker run -d -e ENV_TYPE="production" -e DEPLOY_TYPE="server" --name translation_server_container_deploy -p 80:5001 chinese_translation_server
         """
 
         instances = ec2.create_instances(
-            ImageId="ami-0f9fc25dd2506cf6d",
+            ImageId="ami-04505e74c0741db8d",
             MinCount=1,
             MaxCount=1,
-            UserData=user_data,
             InstanceType="t2.large",
             KeyName=keypair,
         )
