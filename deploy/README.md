@@ -23,5 +23,6 @@ terraform destroy
 
 ## To-Do for Next Time
 
-- Check if need to setup nginx as well
-  - Try to automatically set that up if possible
+- Add different commands for diff model types
+- Add locust benchmarks again
+- Clean up random documentation and files
