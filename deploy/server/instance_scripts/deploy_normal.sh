@@ -6,6 +6,18 @@
 # sudo yum update -y
 sudo amazon-linux-extras install docker -y
 sudo service docker start
+sudo amazon-linux-extras install -y nginx1
+sudo service start nginx
+echo "server {
+    listen 80;
+    access_log /var/log/nginx/deploy.log;
+
+    location /api/ {
+        proxy_pass http://localhost:5001/api/;
+        proxy_http_version 1.1;
+    }
+}" > /etc/nginx/conf.d/default.conf
+
 # sudo yum install docker -y
 # sudo systemctl enable docker.service
 # sudo systemctl start docker.service
