@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 resource "aws_security_group" "dev_access" {
-  name = var.name
-  description="Allow SSH access and outbound access for package installations."
+  name        = "${var.name}_dev_access"
+  description = "Allow SSH access and outbound access for package installations."
   ingress {
     from_port   = var.ssh_port
     to_port     = var.ssh_port
@@ -21,8 +21,8 @@ resource "aws_security_group" "dev_access" {
 }
 
 resource "aws_security_group" "http" {
-  name = var.name
-  description="Allow HTTP in-bound traffic"
+  name        = "${var.name}_http"
+  description = "Allow HTTP in-bound traffic"
   ingress {
     from_port   = var.http_port
     to_port     = var.http_port
@@ -36,6 +36,9 @@ resource "aws_instance" "main_server" {
   instance_type          = var.instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.dev_access.id, aws_security_group.http.id]
+
+  user_data = file("instance_scripts/deploy_with_docker.sh")
+
   tags = {
     Name = var.name
   }
