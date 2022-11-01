@@ -1,7 +1,7 @@
 variable "name" {
   description = "The name used to namespace all resources"
   type        = string
-  default     = "terraform-example"
+  default     = "chinese_translation_server"
 }
 
 variable "ami" {
