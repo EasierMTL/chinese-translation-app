@@ -10,12 +10,19 @@ resource "aws_security_group" "instance" {
     protocol    = "tcp"
     cidr_blocks = var.allow_ssh_from_cidrs
   }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_instance" "example" {
-  ami           = var.ami
-  instance_type = var.instance_type
-  key_name      = var.key_name
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.instance.id]
   tags = {
     Name = var.name
