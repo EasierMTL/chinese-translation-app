@@ -33,3 +33,15 @@ variable "allow_ssh_from_cidrs" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+variable "http_port" {
+  description = "Open SSH access on this port"
+  type        = number
+  default     = 5001  # make this based on environment variable
+}
+
+variable "allow_http_from_cidrs" {
+  description = "Allow HTTP from these CIDR blocks"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
