@@ -11,5 +11,6 @@
     "editor.rulers": [80],
     "editor.defaultFormatter": "ms-python.python",
     "editor.suggest.snippetsPreventQuickSuggestions": false
-  }
+  },
+  "python.linting.pylintArgs": ["--generated-members=numpy.* ,torch.*"]
 }
