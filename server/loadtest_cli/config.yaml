@@ -1,0 +1,12 @@
+model_type: quantized
+cloud_provider: aws
+ssh_key_name: aws
+instance_name: t2.large
+
+# Locust Params
+expect_workers: 5
+users: 100
+spawn_rate: 10
+# host= http://3.90.62.48/ # auto set host
+run_time: 0.5m
+autostart: True
