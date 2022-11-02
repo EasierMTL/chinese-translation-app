@@ -45,6 +45,14 @@ class LoadTestCLI(object):
             base_cmd += f" {cmd}"
         return base_cmd
 
+    def create_instance(self, config: dict):
+        """Initializes Terraform and runs Terraform to create the cloud
+        instances to load-test.
+        """
+        os.system("terraform init")
+        apply_cmd = self.build_terraform_apply_cmd(config)
+        os.system(apply_cmd)
+
     def get_instance_ip(self):
         """Gets the instance IP from the Terraform state.
 
@@ -89,11 +97,8 @@ def main():
     terraform_dir = os.path.join(repo_path, "deploy", "server")
 
     # Start instance to loadtest with Terraform
-    os.chdir(terraform_dir)
-    os.system("terraform init")
-
-    # apply_cmd = cli.build_terraform_apply_cmd(config)
-    # os.system(apply_cmd)
+    os.chdir(terraform_dir)  # must be in directory with terraform files
+    cli.create_instance(config)
 
     ip = cli.get_instance_ip()
     loadtest_url = cli.create_loadtest_url(ip)
