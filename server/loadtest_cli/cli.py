@@ -1,6 +1,7 @@
 import yaml
 import os
 import argparse
+import json
 
 
 class LoadTestCLI(object):
@@ -44,6 +45,29 @@ class LoadTestCLI(object):
             base_cmd += f" {cmd}"
         return base_cmd
 
+    def get_instance_ip(self):
+        """Gets the instance IP from the Terraform state.
+
+        This command should be run after `terraform apply` has been run.
+        """
+        output = os.popen("terraform output -json").read()
+        parsed = json.loads(output)
+        if not isinstance(parsed, dict):
+            raise ValueError(
+                f"terraform output should be a map but is: {type(parsed)}, {parsed}"
+            )
+
+        ip_map = parsed.get("public_ip", "")
+        if ip_map == "":
+            raise ValueError(
+                f"terraform output missing map 'public_ip': {parsed}")
+        return ip_map["value"]
+
+    def create_loadtest_url(self, ip: str):
+        """Creates the HTTP url to load-test from the IP address.
+        """
+        return f"http://{ip}/"
+
 
 def main():
     """The main function to run the CLI.
@@ -68,8 +92,12 @@ def main():
     os.chdir(terraform_dir)
     os.system("terraform init")
 
-    apply_cmd = cli.build_terraform_apply_cmd(config)
-    os.system(apply_cmd)
+    # apply_cmd = cli.build_terraform_apply_cmd(config)
+    # os.system(apply_cmd)
+
+    ip = cli.get_instance_ip()
+    loadtest_url = cli.create_loadtest_url(ip)
+    print(f"\nLoad-testing: {loadtest_url}\n")
 
     # Load test with Locust
 
