@@ -32,3 +32,6 @@ events {
 # https://awstip.com/to-set-up-docker-container-inside-ec2-instance-with-terraform-3af5d53e54ba
 sudo docker pull public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
 sudo docker run -d -e ENV_TYPE="production" -e DEPLOY_TYPE="server" -e NUM_WORKERS=2 --name translation_server_container_deploy -p 5001:5001 public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
+
+# Quantized
+# sudo docker run -d -e ENV_TYPE="production" -e DEPLOY_TYPE="server" -e NUM_WORKERS=2 -e MODEL_TYPE="quantized_dynamic" --name translation_server_container_deploy -p 5001:5001 public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
