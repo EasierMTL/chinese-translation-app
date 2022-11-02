@@ -1,7 +1,7 @@
 model_type: quantized
 cloud_provider: aws
 ssh_key_name: aws
-instance_name: t2.large
+instance_type: t2.micro
 
 # Locust Params
 expect_workers: 5
