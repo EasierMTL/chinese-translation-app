@@ -37,7 +37,7 @@ resource "aws_instance" "main_server" {
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.dev_access.id, aws_security_group.http.id]
 
-  user_data = file("instance_scripts/deploy_normal.sh")
+  user_data = format(file("instance_scripts/deploy_normal.sh"), var.use_quantized)
 
   tags = {
     Name = var.name

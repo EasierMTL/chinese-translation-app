@@ -51,3 +51,9 @@ variable "https_port" {
   type        = number
   default     = 443
 }
+
+variable "use_quantized" {
+  description = "Define this variable through CLI (-var use_quantized=1) if you want to deploy the quantized model."
+  type        = string
+  default = ""
+}
