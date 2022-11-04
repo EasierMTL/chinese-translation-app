@@ -1,11 +1,10 @@
-from enum import Enum
 import os
 import gdown
 
 model_params = {
     "quantized_dynamic": {
         "file_id": "1Bhd2B3UoUuIr9hQROLsqhpzUp3-1vL12",
-        "save_path": "dynamic_quantized.pt"
+        "save_path": "dynamic_quantized.pt",
     }
 }
 
@@ -17,5 +16,7 @@ def download_model(save_path: str, file_id: str):
 
 
 if __name__ == "__main__":
-    download_model(os.path.join("saved_models", "quantized.pt"),
-                   model_params["quantized_dynamic"]["file_id"])
+    download_model(
+        os.path.join("saved_models", "quantized.pt"),
+        model_params["quantized_dynamic"]["file_id"],
+    )
