@@ -86,3 +86,6 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Ignore downloaded models
+dynamic_quantized.pt
