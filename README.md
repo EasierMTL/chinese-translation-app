@@ -1,4 +1,11 @@
-# Chinese Translation API
+# Chinese Translation Web App
+
+- [Frontend](./frontend)
+- [Python](./server)
+  - [Backend REST API](./server/chinese_translation_api)
+  - [Load-Testing CLI](./server/loadtest_cli)
+- [AWS/Terraform Deployments](./deploy)
+- [Misc. Documentation](./docs)
 
 ## Getting Started
 
