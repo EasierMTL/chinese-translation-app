@@ -17,10 +17,10 @@ To start the api:
 
 ```bash
 # Regular model
-poetry run uvicorn api.server:app --workers 1 --reload --port=5001
+poetry run uvicorn chinese_translation_api.server:app --workers 1 --reload --port=5001
 
 # Quantized
-MODEL_TYPE=quantized_dynamic DEPLOY_TYPE=server poetry run uvicorn api.server:app --workers 1 --reload --port=5001
+MODEL_TYPE=quantized_dynamic DEPLOY_TYPE=server poetry run uvicorn chinese_translation_api.server:app --workers 1 --reload --port=5001
 ```
 
 ## Build
