@@ -2,6 +2,27 @@ import yaml
 import os
 import argparse
 import json
+import time
+import requests
+
+
+def check_if_ready(api_url: str) -> bool:
+    """Checks if API is ready to accept connections and requests.
+
+    Sends GET requests until one goes through and a connection is established.
+    The response status does not matter, only if we can establish a connection,
+    and get a response.
+    """
+    try:
+        resp = requests.get(api_url, timeout=3)
+        # Bad Gateway --> NGINX deployed, but API still not ready
+        if resp.status_code == 502:
+            return False
+
+        # Ideally, should be 200 or 405, but can depend on your API.
+        return True
+    except:
+        return False
 
 
 class LoadTestCLI(object):
@@ -115,6 +136,25 @@ class LoadTestCLI(object):
 
         return
 
+    def wait_until_ready(self, host: str, timeout_sec=30, retry_delay_sec=2):
+        """
+        Pings host until we receive a valid response or it takes too long and
+        we time out.
+
+        Returns:
+            True if ping was eventually successful.
+            False if timed out.
+        """
+        current_time_sec = time.time()
+        timeout_time_sec = current_time_sec + timeout_sec
+        server_is_up = check_if_ready(host)
+        while current_time_sec < timeout_time_sec and not server_is_up:
+            time.sleep(retry_delay_sec)
+            current_time_sec = time.time()
+            server_is_up = check_if_ready(host)
+
+        return server_is_up
+
 
 def main():
     """The main function to run the CLI.
@@ -141,15 +181,29 @@ def main():
     os.chdir(terraform_dir)  # must be in directory with terraform files
     cli.create_instance(config)
 
-    # Load test with Locust
     ip = cli.get_instance_ip()
     loadtest_url = cli.create_loadtest_url(ip)
-    log_path = os.path.join(cli_path, "locust.log")
-    locust_file_path = os.path.join(cli_path, "locustfile.py")
-    print(f"\nLoad-testing: {loadtest_url}\nLogging to: {log_path}\n")
-    cli.load_test(loadtest_url, locust_file_path, log_path, config)
+
+    print("Waiting until instance is ready to receive API requests...")
+    os.chdir(os.path.join(cli_path,
+                          "stats"))  # Chdir so csv files save in the stats dir
+    # Normally takes 130-140 seconds to completely initialize the instance's API
+    timeout_sec = 140
+    is_ready = cli.wait_until_ready(loadtest_url, timeout_sec, 2)
+    if is_ready:
+        # Load test with Locust
+        log_path = os.path.join(cli_path, "locust.log")
+        locust_file_path = os.path.join(cli_path, "locustfile.py")
+        print(f"\nLoad-testing: {loadtest_url}\nLogging to: {log_path}\n")
+        cli.load_test(loadtest_url, locust_file_path, log_path, config)
+    else:
+        print(
+            f"ERROR: API not ready after {timeout_sec} seconds, could not load-test."
+        )
 
     # Clean up
+    os.chdir(terraform_dir)  # must be in directory with terraform files
+    print("Cleaning up...")
     os.system("terraform destroy -auto-approve")
 
 
