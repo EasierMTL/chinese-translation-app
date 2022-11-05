@@ -2,6 +2,8 @@
 
 Run the CLI to automatically deploy the API on an AWS instance with Docker/Terraform and load test the API with Locust.
 
+This is intended so you can test the same API across multiple instance types to identify the optimal instance type to use for your userbase.
+
 ## Getting Started
 
 ```bash
@@ -10,6 +12,21 @@ python ./cli.py -c ./config.yaml
 ```
 
 This will create and start the AWS instance and load test it with the settings defined in [`config.yaml`](./config.yaml)
+
+## How Does the CLI Work?
+
+The CLI is a simple wrapper around Locust and Terraform. It goes through the following steps:
+
+1. Parses configuration.
+2. Starts an AWS instance based on the config with Terraform.
+3. Waits until the instance is ready for load testing.
+4. Load tests with Locust according to the provided config.
+5. Writes stats and logs to files relative to this directory.
+6. Clean up the created AWS resources and instances with Terraform (`terraform destroy`).
+
+This means that if you cancel the CLI midway, you could run into a scenario where resources are not cleaned up properly. **If you do `CTRL + C` during load testing, it will cancel load testing and go straight to Terraform cleanup steps.**
+
+If that still does not work, you could manually `cd` into `deploy/server` and call the `terraform destroy` command yourself.
 
 ## Load-Testing without CLI
 
