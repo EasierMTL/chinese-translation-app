@@ -89,3 +89,6 @@ terraform.rc
 
 # Ignore downloaded models
 dynamic_quantized.pt
+
+# Ignore the locust log
+locust.log
