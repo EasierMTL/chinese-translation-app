@@ -16,7 +16,8 @@ def check_if_ready(api_url: str) -> bool:
     try:
         resp = requests.get(api_url, timeout=3)
         # Bad Gateway --> NGINX deployed, but API still not ready
-        if resp.status_code == 502:
+        is_bad_gateway = resp.status_code == 502
+        if is_bad_gateway:
             return False
 
         # Ideally, should be 200 or 405, but can depend on your API.
@@ -104,6 +105,7 @@ class LoadTestCLI(object):
         Load-tests through the locust CLI instead of with the library to allow
         for multiple workers.
 
+        ```python
         import gevent
         from locust.env import Environment
         from .locustfile import TranslateUser
@@ -122,7 +124,8 @@ class LoadTestCLI(object):
         gevent.spawn_later(test_runtime, lambda: env.runner.quit())
 
         # wait for the greenlets
-        env.runner.greenlet.join()         
+        env.runner.greenlet.join()
+        ```         
         """
         url = url + "/" if not url.endswith("/") else url
         # Example:
@@ -189,7 +192,8 @@ def main():
                           "stats"))  # Chdir so csv files save in the stats dir
     # Normally takes 130-140 seconds to completely initialize the instance's API
     timeout_sec = 140
-    is_ready = cli.wait_until_ready(loadtest_url, timeout_sec, 2)
+    translation_url = f"{loadtest_url}/api/translate/chinese"
+    is_ready = cli.wait_until_ready(translation_url, timeout_sec, 2)
     if is_ready:
         # Load test with Locust
         log_path = os.path.join(cli_path, "locust.log")
