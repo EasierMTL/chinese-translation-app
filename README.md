@@ -13,11 +13,26 @@ Full-stack web application to automatically translate Chinese to English (and vi
   - [Model Evaluation Pipeline](./server/chinese_translation_api/evaluation)
   - [Load-Testing CLI](./server/loadtest_cli/README.md)
 - [AWS/Terraform Deployment Configurations and Scripts](./deploy/README.md)
-- [Misc. Documentation](./docs/deployment.md)
+- [Misc. Documentation](./docs)
+  - [Full Stack Cloud Deployment with Docker/NGINX/SSL](./docs/deployment.md)
+  - [Research Report](./docs/final_report.md)
+  - [Initial Project Proposal](./docs/proposal.md)
 
 ## Getting Started
 
-To build the full web-app and run it:
+**Make sure you have the following already installed:**
+
+- Frontend
+  - `^yarn 1.22.17`
+- Backend
+  - `^poetry 1.1.11`
+- Deployment
+  - `docker`
+  - `terraform`
+
+Rest will be installed as long as you follow the documentation.
+
+**To build the full web-app and run it:**
 
 ```bash
 # for building repeatedly when debugging
@@ -28,6 +43,18 @@ docker-compose up -d
 ```
 
 If you don't want to use `docker` or want to debug, run the `frontend` and `server` separately. See the individual READMEs in `frontend` and `server` for more information.
+
+## Tech Stack
+
+- Frontend
+  - React, draft.js
+- Backend
+  - Python, FastAPI
+- Model Development
+  - PyTorch, HuggingFace
+- Deployment and Load-Testing
+  - AWS, Docker, Terraform
+  - Locust
 
 ## Contributors
 
