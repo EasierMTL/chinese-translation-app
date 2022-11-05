@@ -20,9 +20,3 @@ Clean up with:
 ```bash
 terraform destroy
 ```
-
-## To-Do for Next Time
-
-- Add different commands for diff model types
-- Add locust benchmarks again
-- Clean up random documentation and files

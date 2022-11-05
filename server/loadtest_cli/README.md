@@ -9,7 +9,7 @@ Run the CLI to automatically deploy the API on an AWS instance with Docker/Terra
 python ./cli.py -c ./config.yaml
 ```
 
-This will start the AWS instance and load test it with the settings defined in [`config.yaml`](./config.yaml)
+This will create and start the AWS instance and load test it with the settings defined in [`config.yaml`](./config.yaml)
 
 ## Load-Testing without CLI
 
