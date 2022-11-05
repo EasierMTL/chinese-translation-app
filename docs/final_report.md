@@ -115,6 +115,7 @@ We suspect that a reason for this lack of performance is due to us using a fairl
 
 Nevertheless, we were still able to build a quantized model that was able to perform quicker than the base model for a relatively negligible loss in performance. This performance held up both in evaluation scripts and in production.
 
-P.S. Feel free to play around with our models @ https://chinesetranslationapi.com/.
+~~P.S. Feel free to play around with our models @ https://chinesetranslationapi.com/.~~
 
 - It's a much smaller server because we're broke college students, but it works.
+- Edit: Domain is now down because server costs are expensive and we can't afford it :(
