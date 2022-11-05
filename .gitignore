@@ -92,3 +92,4 @@ dynamic_quantized.pt
 
 # Ignore the locust log
 locust.log
+server/loadtest_cli/stats/*.csv
