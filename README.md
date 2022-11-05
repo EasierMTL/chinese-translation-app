@@ -31,5 +31,5 @@ If you don't want to use `docker` or want to debug, run the `frontend` and `serv
 
 ## Contributors
 
-- [Joseph Chen; jchen42703](https://github.com/jchen42703/)
-- [Benson Jin; jinb2](https://github.com/Jinb2)
+- [Joseph Chen (jchen42703)](https://github.com/jchen42703/)
+- [Benson Jin (Jinb2)](https://github.com/Jinb2)
