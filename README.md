@@ -1,6 +1,8 @@
-# Chinese Translation Web App
+# Chinese-English Translation Web App
 
-Full-stack web application to automatically translate Chinese to English (and vice-versa) with React/FastAPI.
+Full-stack web application to automatically translate Chinese to English (and vice-versa) with React/FastAPI and deep learning models (BERT) and automated cloud API load-testing with AWS, Terraform, and Locust.
+
+![](./docs/images/demo.gif)
 
 ## Table of Contents
 
@@ -26,3 +28,8 @@ docker-compose up -d
 ```
 
 If you don't want to use `docker` or want to debug, run the `frontend` and `server` separately. See the individual READMEs in `frontend` and `server` for more information.
+
+## Contributors
+
+- [Joseph Chen; jchen42703](https://github.com/jchen42703/)
+- [Benson Jin; jinb2](https://github.com/Jinb2)
