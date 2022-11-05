@@ -110,7 +110,7 @@ class LoadTestCLI(object):
         test_runtime = config["run_time"]
         workers = config["expect_workers"]
         os.system(
-            f"locust -f {locust_file_path} --headless --host={url} -u {num_users} -r {user_spawn_rate} --run-time {test_runtime} --expect-workers={workers} --logfile={log_path}"
+            f"locust -f {locust_file_path} --headless --host={url} --csv=load_test -u {num_users} -r {user_spawn_rate} --run-time {test_runtime} --expect-workers={workers} --logfile={log_path}"
         )
 
         return
@@ -146,7 +146,7 @@ def main():
     loadtest_url = cli.create_loadtest_url(ip)
     log_path = os.path.join(cli_path, "locust.log")
     locust_file_path = os.path.join(cli_path, "locustfile.py")
-    print(f"\nLoad-testing: {loadtest_url}\nLogging to: {log_path}...\n")
+    print(f"\nLoad-testing: {loadtest_url}\nLogging to: {log_path}\n")
     cli.load_test(loadtest_url, locust_file_path, log_path, config)
 
     # Clean up
