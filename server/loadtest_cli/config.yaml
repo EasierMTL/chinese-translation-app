@@ -1,20 +1,10 @@
 model_type: quantized
 cloud_provider: aws
 ssh_key_name: aws
-instance_type: t2.micro
+instance_type: t2.large
 
 # Locust Params
-# Orig master.conf
-# locustfile = ~/chinese-translation/server/chinese_translation_api/loadtest/locustfile.py
-# expect-workers = 5
-# users = 100
-# spawn-rate = 10
-# host= http://3.90.62.48/
-# run-time = 15m
-# autostart = true
-expect_workers: 5
+expect_workers: 2
 users: 100
 spawn_rate: 10
-# host= http://3.90.62.48/ # auto set host
-run_time: 0.5m
-autostart: True
+run_time: 30s
