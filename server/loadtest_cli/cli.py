@@ -76,6 +76,45 @@ class LoadTestCLI(object):
         """
         return f"http://{ip}/"
 
+    def load_test(self, url: str, locust_file_path: str, log_path: str,
+                  config: dict):
+        """Runs the Locust load-testing according to the user's config.
+
+        Load-tests through the locust CLI instead of with the library to allow
+        for multiple workers.
+
+        import gevent
+        from locust.env import Environment
+        from .locustfile import TranslateUser
+        from locust.stats import stats_printer, stats_history
+
+        # setup Environment and Runner
+        env = Environment(user_classes=[TranslateUser])
+        env.create_local_runner()
+        # start a greenlet that periodically outputs the current stats
+        gevent.spawn(stats_printer(env.stats))
+        # start a greenlet that save current stats to history
+        gevent.spawn(stats_history, env.runner)
+        env.runner.start(num_users, spawn_rate=user_spawn_rate)
+
+        # in 60 seconds stop the runner
+        gevent.spawn_later(test_runtime, lambda: env.runner.quit())
+
+        # wait for the greenlets
+        env.runner.greenlet.join()         
+        """
+        url = url + "/" if not url.endswith("/") else url
+        # Example:
+        # locust -f locustfile.py --host=http://127.0.0.1:5001/ --headless -u 1 -r 1 --run-time 5s --expect-workers=1 --logfile="./locust.log"
+        num_users, user_spawn_rate = config["users"], config["spawn_rate"]
+        test_runtime = config["run_time"]
+        workers = config["expect_workers"]
+        os.system(
+            f"locust -f {locust_file_path} --headless --host={url} -u {num_users} -r {user_spawn_rate} --run-time {test_runtime} --expect-workers={workers} --logfile={log_path}"
+        )
+
+        return
+
 
 def main():
     """The main function to run the CLI.
@@ -92,7 +131,9 @@ def main():
     print(f"Using config [{config_fpath}]:\n{config}")
 
     # absolute path to the repo root dir
-    repo_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    file_path = os.path.abspath(__file__)
+    cli_path = os.path.dirname(file_path)
+    repo_path = os.path.dirname(os.path.dirname(os.path.dirname(file_path)))
     # Path to the terraform deployment directory
     terraform_dir = os.path.join(repo_path, "deploy", "server")
 
@@ -100,11 +141,13 @@ def main():
     os.chdir(terraform_dir)  # must be in directory with terraform files
     cli.create_instance(config)
 
+    # Load test with Locust
     ip = cli.get_instance_ip()
     loadtest_url = cli.create_loadtest_url(ip)
-    print(f"\nLoad-testing: {loadtest_url}\n")
-
-    # Load test with Locust
+    log_path = os.path.join(cli_path, "locust.log")
+    locust_file_path = os.path.join(cli_path, "locustfile.py")
+    print(f"\nLoad-testing: {loadtest_url}\nLogging to: {log_path}...\n")
+    cli.load_test(loadtest_url, locust_file_path, log_path, config)
 
     # Clean up
     os.system("terraform destroy -auto-approve")
