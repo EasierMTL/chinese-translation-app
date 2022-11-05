@@ -4,6 +4,14 @@ ssh_key_name: aws
 instance_type: t2.micro
 
 # Locust Params
+# Orig master.conf
+# locustfile = ~/chinese-translation/server/chinese_translation_api/loadtest/locustfile.py
+# expect-workers = 5
+# users = 100
+# spawn-rate = 10
+# host= http://3.90.62.48/
+# run-time = 15m
+# autostart = true
 expect_workers: 5
 users: 100
 spawn_rate: 10
