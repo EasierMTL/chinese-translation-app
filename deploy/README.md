@@ -1,8 +1,8 @@
-# Deploying and Benchmarking with Terraform and Locust
+# Deploying the API to AWS/GCP with Terraform
 
 The server docker image URI to load-test: `public.ecr.aws/h1c6y7g8/chinese-translation-api:latest`
 
-## Deploy API Server with Terraform
+## Getting Started
 
 Make sure you have `terraform`, `gcloud`, and `aws` already installed and configured.
 
