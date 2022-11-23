@@ -17,7 +17,9 @@ def check_if_ready(api_url: str) -> bool:
         resp = requests.get(api_url, timeout=3)
         # Bad Gateway --> NGINX deployed, but API still not ready
         is_bad_gateway = resp.status_code == 502
-        if is_bad_gateway:
+        # Not Found --> NGINX not setup yet
+        not_found = resp.status_code == 404
+        if is_bad_gateway or not_found:
             return False
 
         # Ideally, should be 200 or 405, but can depend on your API.
@@ -55,16 +57,24 @@ class LoadTestCLI(object):
         """Builds the Terraform apply command, which deploys the API on to the
         desied cloud provider.
         """
+        is_aws = config["cloud_provider"] == "aws"
         use_quantized_cmd = "-var='use_quantized=1'" if config[
             "model_type"] == "quantized" else ""
-        key_name = config["ssh_key_name"]
-        key_name_cmd = f"-var='key_name={key_name}'"
+
+        key_name_cmd = ""
+        if is_aws:
+            key_name = config["ssh_key_name"]
+            key_name_cmd = f"-var='key_name={key_name}'"
+
         instance_type = config["instance_type"]
         instance_type_cmd = f"-var='instance_type={instance_type}'"
         base_cmd = "terraform apply -auto-approve"
         # Add all of the Terraform variable overwrites
-        for cmd in [use_quantized_cmd, key_name_cmd, instance_type_cmd]:
-            base_cmd += f" {cmd}"
+        commands = [use_quantized_cmd, key_name_cmd, instance_type_cmd]
+        for cmd in commands:
+            # ignore empty command
+            if key_name_cmd != "":
+                base_cmd += f" {cmd}"
         return base_cmd
 
     def create_instance(self, config: dict):
@@ -179,7 +189,7 @@ def main():
     repo_path = os.path.dirname(os.path.dirname(os.path.dirname(file_path)))
     # Path to the terraform deployment directory
     # GCE vs AWS
-    if config.cloud_provider == "gcp":
+    if config["cloud_provider"] == "gcp":
         terraform_dir = os.path.join(repo_path, "deploy", "gce")
     else:
         terraform_dir = os.path.join(repo_path, "deploy", "server")
