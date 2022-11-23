@@ -24,9 +24,9 @@ resource "google_compute_firewall" "ssh" {
     ports    = ["22"]
     protocol = "tcp"
   }
-  direction     = "INGRESS"
-  network       = google_compute_network.vpc_network.id
-  priority      = 1000
+  direction = "INGRESS"
+  network   = google_compute_network.vpc_network.id
+  priority  = 1000
   # Allow from everywhere
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["ssh"]
@@ -70,5 +70,5 @@ resource "google_compute_instance" "default" {
 
 // A variable for extracting the external IP address of the VM
 output "Web-server-URL" {
- value = google_compute_instance.default.network_interface.0.access_config.0.nat_ip
+  value = google_compute_instance.default.network_interface.0.access_config.0.nat_ip
 }
