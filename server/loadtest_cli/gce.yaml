@@ -1,0 +1,9 @@
+model_type: quantized
+cloud_provider: gcp
+instance_type: e2-standard-2
+
+# Locust Params
+expect_workers: 2
+users: 100
+spawn_rate: 10
+run_time: 30s
