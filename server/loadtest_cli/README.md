@@ -6,23 +6,31 @@ This is intended so you can test the same API across multiple instance types to 
 
 ## Getting Started
 
+Make sure you have `locust`, `terraform`, `gcloud`, and `aws` already installed and configured.
+
+- For `gcloud`, make sure to have already run `gcloud init`
+- For `aws`, make sure to have already run `aws init`
+
 ```bash
 # Call python to run cli.py and specify the config.yaml path
-python ./cli.py -c ./config.yaml
+# For AWS EC2
+python ./cli.py -c ./aws_ec2.yaml
+# For Google Compute Engine VM instance
+python ./cli.py -c ./gcp_gce.yaml
 ```
 
-This will create and start the AWS instance and load test it with the settings defined in [`config.yaml`](./config.yaml)
+This will create and start the AWS/GCE instance and load test it with the settings defined in [`config.yaml`](./config.yaml)
 
 ## How Does the CLI Work?
 
 The CLI is a simple wrapper around Locust and Terraform. It goes through the following steps:
 
 1. Parses configuration.
-2. Starts an AWS instance based on the config with Terraform.
+2. Starts an AWS/GCE instance based on the config with Terraform.
 3. Waits until the instance is ready for load testing.
 4. Load tests with Locust according to the provided config.
 5. Writes stats and logs to files relative to this directory.
-6. Clean up the created AWS resources and instances with Terraform (`terraform destroy`).
+6. Clean up the created AWS/GCE resources and instances with Terraform (`terraform destroy`).
 
 This means that if you cancel the CLI midway, you could run into a scenario where resources are not cleaned up properly. **If you do `CTRL + C` during load testing, it will cancel load testing and go straight to Terraform cleanup steps.**
 
