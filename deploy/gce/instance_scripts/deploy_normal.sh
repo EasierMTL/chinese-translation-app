@@ -41,3 +41,5 @@ else
   echo "Using quantized model..."
   sudo docker run -d -e ENV_TYPE="production" -e DEPLOY_TYPE="server" -e NUM_WORKERS=2 -e MODEL_TYPE="quantized_dynamic" --name translation_server_container_deploy -p 5001:5001 public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
 fi
+
+sudo nginx -s reload
