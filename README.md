@@ -1,6 +1,6 @@
 # Chinese-English Translation Web App
 
-Full-stack web application to automatically translate Chinese to English (and vice-versa) with React/FastAPI and deep learning models (BERT) and automated cloud API load-testing with AWS, Terraform, and Locust.
+Full-stack web application to automatically translate Chinese to English (and vice-versa) with React/FastAPI and deep learning models (BERT) and automated cloud API load-testing with AWS EC2, Google Compute Engine, Terraform, and Locust.
 
 ![](./docs/images/demo.gif)
 
@@ -13,7 +13,7 @@ Full-stack web application to automatically translate Chinese to English (and vi
   - [Backend REST API](./server/README.md)
   - [Model Development](./server/chinese_translation_api/models/README.md)
   - [Model Evaluation Pipeline](./server/chinese_translation_api/evaluation)
-  - [Load-Testing CLI](./server/loadtest_cli)
+  - [Automated Deployments & Load-Testing CLI](./server/loadtest_cli)
 - [Terraform Deployment Configurations and Scripts](./deploy)
   - [AWS Deployment](./deploy/server)
   - [GCE Deployment](./deploy/gce)
@@ -33,6 +33,8 @@ Full-stack web application to automatically translate Chinese to English (and vi
 - Deployment
   - `docker`
   - `terraform`
+  - `aws`
+  - `gcloud`
 
 Rest will be installed as long as you follow the documentation.
 
@@ -57,7 +59,7 @@ If you don't want to use `docker` or want to debug, run the `frontend` and `serv
 - Model Development
   - PyTorch, HuggingFace
 - Deployment and Load-Testing
-  - AWS, Docker, Terraform
+  - AWS, GCE, Docker, Terraform
   - Locust
 
 ## Contributors
