@@ -57,7 +57,7 @@ resource "google_compute_instance" "default" {
     }
   }
 
-  metadata_startup_script = file("instance_scripts/deploy_normal.sh")
+  metadata_startup_script = format(file("instance_scripts/deploy_normal.sh"), var.use_quantized)
 
   network_interface {
     subnetwork = google_compute_subnetwork.default.id

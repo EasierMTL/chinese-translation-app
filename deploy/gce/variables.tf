@@ -19,13 +19,13 @@ variable "instance_type" {
 variable "region" {
   description = "GCE region to use"
   type        = string
-  default     = "us-east1"
+  default     = "us-east5"
 }
 
 variable "zone" {
   description = "GCE zone to use"
   type        = string
-  default     = "us-east1-b"
+  default     = "us-east5-a"
 }
 
 variable "image" {

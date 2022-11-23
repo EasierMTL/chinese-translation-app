@@ -12,6 +12,9 @@ Make sure you have `terraform` installed and `aws` CLI configured.
 cd server
 terraform init
 terraform plan
+# For quantized
+terraform apply -var use_quantized=1
+# For regular
 terraform apply
 ```
 
