@@ -20,3 +20,8 @@ Clean up with:
 ```bash
 terraform destroy
 ```
+
+## GCE
+
+- Make sure `gcloud` is properly configured for `terraform` (`gcloud init`)!
+- The startup script takes around `1m48.555s`
