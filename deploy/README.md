@@ -25,3 +25,5 @@ terraform destroy
 
 - Make sure `gcloud` is properly configured for `terraform` (`gcloud init`)!
 - The startup script takes around `1m48.555s`
+- Startup script logs located @ `/var/log/daemon.log`
+  - https://stackoverflow.com/questions/42786661/startup-script-logs-location
