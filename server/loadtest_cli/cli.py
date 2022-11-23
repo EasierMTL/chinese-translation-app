@@ -178,7 +178,11 @@ def main():
     cli_path = os.path.dirname(file_path)
     repo_path = os.path.dirname(os.path.dirname(os.path.dirname(file_path)))
     # Path to the terraform deployment directory
-    terraform_dir = os.path.join(repo_path, "deploy", "server")
+    # GCE vs AWS
+    if config.cloud_provider == "gcp":
+        terraform_dir = os.path.join(repo_path, "deploy", "gce")
+    else:
+        terraform_dir = os.path.join(repo_path, "deploy", "server")
 
     # Start instance to loadtest with Terraform
     os.chdir(terraform_dir)  # must be in directory with terraform files
