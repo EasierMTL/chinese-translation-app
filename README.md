@@ -15,7 +15,7 @@ Full-stack web application to automatically translate Chinese to English (and vi
   - [Model Evaluation Pipeline](./server/chinese_translation_api/evaluation)
   - [Automated Deployments & Load-Testing CLI](./server/loadtest_cli)
 - [Terraform Deployment Configurations and Scripts](./deploy)
-  - [AWS Deployment](./deploy/server)
+  - [AWS Deployment](./deploy/aws)
   - [GCE Deployment](./deploy/gce)
 - [Misc. Documentation](./docs)
   - [Full Stack Cloud Deployment with Docker/NGINX/SSL](./docs/deployment.md)

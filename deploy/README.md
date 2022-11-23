@@ -16,7 +16,11 @@ Make sure you have `terraform`, `gcloud`, and `aws` already installed and config
 **Deploy with Terraform:**
 
 ```bash
-cd server
+# cd into aws for AWS ec2
+cd aws
+# OR cd into gce for GCP gce
+cd gce
+
 terraform init
 terraform plan
 
