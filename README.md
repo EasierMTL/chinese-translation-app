@@ -4,6 +4,8 @@ Full-stack web application to automatically translate Chinese to English (and vi
 
 ![](./docs/images/demo.gif)
 
+**Currently, this repository is being split up into microservices for the upcoming K8s (EKS/GKE) integration.**
+
 ## Table of Contents
 
 - [Frontend](./frontend)
