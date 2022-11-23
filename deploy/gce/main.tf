@@ -69,6 +69,7 @@ resource "google_compute_instance" "default" {
 }
 
 // A variable for extracting the external IP address of the VM
-output "Web-server-URL" {
-  value = google_compute_instance.default.network_interface.0.access_config.0.nat_ip
+output "public_ip" {
+  value       = google_compute_instance.default.network_interface.0.access_config.0.nat_ip
+  description = "The public IP of the server"
 }
