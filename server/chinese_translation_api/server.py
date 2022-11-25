@@ -9,6 +9,8 @@ from chinese_translation_api.routes import router
 
 torch.set_num_threads(1)
 
+API_VERSION = "v0.0.1"
+
 
 def get_origins() -> List[str]:
     """configures cors based on the environment
@@ -37,7 +39,13 @@ def get_application(api_prefix: str) -> FastAPI:
     From:
     https://github.com/nsidnev/fastapi-realworld-example-app/blob/master/app/main.py
     """
-
+    # Print environment
+    print(f"API_VERSION: {API_VERSION}")
+    env_vars = [
+        "DEPLOY_TYPE", "ENV_TYPE", "NUM_WORKERS", "MODEL_TYPE", "CLIENT_DOMAIN"
+    ]
+    for env_var in env_vars:
+        print(f"{env_var}: {os.environ.get(env_var)}")
     application = FastAPI()
 
     deploy_type = os.environ.get("DEPLOY_TYPE")
