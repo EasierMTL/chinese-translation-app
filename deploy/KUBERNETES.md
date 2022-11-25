@@ -111,6 +111,8 @@ Add that as an A record to the domain you want.
 
 Now you can navigate to the domain link with vanilla HTTP!
 
+At this point, you should go to the HTTP only version of the website and verify that all of the components work.
+
 ### 3. Setting Up Cert Manager
 
 1. Create a namespace for the cert manager:
