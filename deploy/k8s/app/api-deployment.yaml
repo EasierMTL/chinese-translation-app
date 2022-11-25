@@ -37,3 +37,5 @@ spec:
             # Disables CORS (still need to configure nginx for it :()
             - name: DEPLOY_TYPE
               value: server
+            - name: NO_PREPEND
+              value: "yes"
