@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
+          image: public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.1
           ports:
             - containerPort: 5001
           resources:
@@ -31,15 +31,9 @@ spec:
               value: easiermtl.com
             - name: ENV_TYPE
               value: production
-            - name: MODEL_TYPE
-              value: quantized_dynamic
-
-          # env:
-          #   - name: PG_HOST
-          #     value: postgres-cluster-ip-service
-          #   - name: PG_PORT
-          #     value: "5432"
-          #   - name: PGUSER
-          #     value: postgres
-          #   - name: PGDATABASE
-          #     value: postgres
+            # Quantized not working because for some reason gdown gets Access Denied on the GKE cluster
+            # - name: MODEL_TYPE
+            #   value: quantized_dynamic
+            # Disables CORS (still need to configure nginx for it :()
+            - name: DEPLOY_TYPE
+              value: server
