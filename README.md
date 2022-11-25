@@ -2,9 +2,9 @@
 
 Full-stack web application to automatically translate Chinese to English (and vice-versa) with React/FastAPI and deep learning models (BERT) and automated cloud API load-testing with AWS EC2, Google Compute Engine, Terraform, and Locust.
 
-![](./docs/images/demo.gif)
+Hosted at: https://easiermtl.com/
 
-**Currently, this repository is being split up into microservices for the upcoming K8s (EKS/GKE) integration.**
+![](./docs/images/demo.gif)
 
 ## Table of Contents
 
@@ -14,11 +14,13 @@ Full-stack web application to automatically translate Chinese to English (and vi
   - [Model Development](./server/chinese_translation_api/models/README.md)
   - [Model Evaluation Pipeline](./server/chinese_translation_api/evaluation)
   - [Automated Deployments & Load-Testing CLI](./server/loadtest_cli)
-- [Terraform Deployment Configurations and Scripts](./deploy)
+- [Terraform Cloud Instances Deployment Configurations and Scripts](./deploy)
   - [AWS Deployment](./deploy/aws)
   - [GCE Deployment](./deploy/gce)
+- [Kubernetes + Helm Deployment to Google Kubernetes Engine (GKE)](./deploy/KUBERNETES.md)
+  - [Kubernetes Configuration Files](./deploy/k8s)
+  - [Guide](./deploy/KUBERNETES.md)
 - [Misc. Documentation](./docs)
-  - [Full Stack Cloud Deployment with Docker/NGINX/SSL](./docs/deployment.md)
   - [Research Report](./docs/final_report.md)
   - [Initial Project Proposal](./docs/proposal.md)
 
@@ -35,20 +37,13 @@ Full-stack web application to automatically translate Chinese to English (and vi
   - `terraform`
   - `aws`
   - `gcloud`
+  - `kubectl`
 
 Rest will be installed as long as you follow the documentation.
 
-**To build the full web-app and run it:**
+The full deployment instructions to Google Kubernetes Engine with K8s and Helm are located [here](./deploy/KUBERNETES.md).
 
-```bash
-# for building repeatedly when debugging
-docker-compose build --no-cache
-
-# running
-docker-compose up -d
-```
-
-If you don't want to use `docker` or want to debug, run the `frontend` and `server` separately. See the individual READMEs in `frontend` and `server` for more information.
+If you don't want to use Kubernetes or want to run locally, run the `frontend` and `server` separately. See the individual READMEs in [`frontend`](./frontend) and [`server`](./server) for more information.
 
 ## Tech Stack
 
@@ -58,9 +53,12 @@ If you don't want to use `docker` or want to debug, run the `frontend` and `serv
   - Python, FastAPI
 - Model Development
   - PyTorch, HuggingFace
-- Deployment and Load-Testing
+- Instance Deployment & Load-Testing
   - AWS, GCE, Docker, Terraform
   - Locust
+- Actual Deployment
+  - Kubernetes + Helm
+  - Google Kubernetes Engine (GKE)
 
 ## Contributors
 
