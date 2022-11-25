@@ -9,7 +9,7 @@ from chinese_translation_api.routes import router
 
 torch.set_num_threads(1)
 
-API_VERSION = "v0.0.1"
+API_VERSION = "v0.0.2"
 
 
 def get_origins() -> List[str]:
@@ -42,7 +42,8 @@ def get_application(api_prefix: str) -> FastAPI:
     # Print environment
     print(f"API_VERSION: {API_VERSION}")
     env_vars = [
-        "DEPLOY_TYPE", "ENV_TYPE", "NUM_WORKERS", "MODEL_TYPE", "CLIENT_DOMAIN"
+        "DEPLOY_TYPE", "ENV_TYPE", "NUM_WORKERS", "MODEL_TYPE", "CLIENT_DOMAIN",
+        "NO_PREPEND"
     ]
     for env_var in env_vars:
         print(f"{env_var}: {os.environ.get(env_var)}")
@@ -64,4 +65,8 @@ def get_application(api_prefix: str) -> FastAPI:
     return application
 
 
-app = get_application("/api")
+# Serving on K8s doesn't let you proxy_pass the traditional way.
+if os.environ.get("NO_PREPEND"):
+    app = get_application("")
+else:
+    app = get_application("/api")
