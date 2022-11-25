@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.allow-http: "true"
 spec:
   rules:
-    - host: chinesetranslationapi.com
+    - host: easiermtl.com
       http:
         paths:
           - path: /?(.*)

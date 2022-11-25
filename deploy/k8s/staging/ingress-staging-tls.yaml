@@ -17,10 +17,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - chinesetranslationapi.com
-      secretName: chinesetranslationapi-tls
+        - easiermtl.com
+      secretName: easiermtl-tls
   rules:
-    - host: chinesetranslationapi.com
+    - host: easiermtl.com
       http:
         paths:
           - path: /?(.*)
