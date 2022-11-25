@@ -5,6 +5,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     # https://github.com/cert-manager/cert-manager/issues/2826
+    # Only add this after you get the prod certificate
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     # nginx.ingress.kubernetes.io/ssl-redirect: "true"
     acme.cert-manager.io/http01-edit-in-place: "true"
     cert-manager.io/issuer:
@@ -20,7 +22,7 @@ spec:
     - host: easiermtl.com
       http:
         paths:
-          - path: /
+          - path: /?(.*)
             pathType: Prefix
             backend:
               service:
