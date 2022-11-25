@@ -43,7 +43,6 @@ This covers the deploying the full stack application + NGINX ingress controller.
 ```bash
 # in /deploy
 kubectl apply -f k8s/app
-kubectl apply -f k8s/http-only
 ```
 
 Then, check if your deployment worked with:
@@ -72,7 +71,13 @@ helm repo update
 
 # install the nginx ingress controller and uses the ingress config
 helm install nginx-ingress ingress-nginx/ingress-nginx
+# If you already ran this in the past and needed to patch the deployment:
+helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx
+```
 
+Then verify nginx ingress controller service:
+
+```bash
 # Verify that the deployment and service are up
 kubectl get deployment nginx-ingress-ingress-nginx-controller
 kubectl get service nginx-ingress-ingress-nginx-controller
@@ -91,6 +96,12 @@ kubectl get ingress ingress-service
 
 - The displayed IP will be the same as the result of `echo $NGINX_INGRESS_IP`
 - note: `ingress-service` is just the name of the ingress service ([./k8s/ingress-service.yaml](./k8s/ingress-service.yaml))
+
+Start a custom nginx ingress service:
+
+```bash
+kubectl apply -f k8s/http-only
+```
 
 ### 2. Adding Domain
 
