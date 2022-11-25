@@ -20,8 +20,10 @@ def get_origins() -> List[str]:
         origins = [
             "http://localhost:3006",
         ]
-        if domain:
-            origins.append(domain)
+        # Whitelist the HTTP and HTTPS versions of the domain if available
+        if domain is not None:
+            origins.append(f"http://{domain}/")
+            origins.append(f"https://{domain}/")
     else:
         origins = [
             "http://localhost", "http://localhost:3006", "http://localhost:3000"
