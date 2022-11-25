@@ -15,12 +15,13 @@ def get_origins() -> List[str]:
     """
     env = os.environ.get("ENV_TYPE")
     is_prod = env == "production"
-
+    domain = os.environ.get("CLIENT_DOMAIN")
     if is_prod:
         origins = [
-            "https://chinesetranslationapi.com/",
             "http://localhost:3006",
         ]
+        if domain:
+            origins.append(domain)
     else:
         origins = [
             "http://localhost", "http://localhost:3006", "http://localhost:3000"
