@@ -27,6 +27,12 @@ spec:
           env:
             - name: NUM_WORKERS
               value: "2"
+            - name: CLIENT_DOMAIN
+              value: easiermtl.com
+            - name: ENV_TYPE
+              value: production
+            - name: MODEL_TYPE
+              value: quantized_dynamic
 
           # env:
           #   - name: PG_HOST
