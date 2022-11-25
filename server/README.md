@@ -23,24 +23,35 @@ poetry run uvicorn chinese_translation_api.server:app --workers 1 --reload --por
 MODEL_TYPE=quantized_dynamic DEPLOY_TYPE=server poetry run uvicorn chinese_translation_api.server:app --workers 1 --reload --port=5001
 ```
 
-## Build
+## Build and Push to ECR
 
-```
+```bash
 poetry export -f requirements.txt --output requirements.txt
 ```
 
 Build docker:
 
-```
-docker build -t chinese_translation_server .
+```bash
+docker build -t chinese-translation-api .
 ```
 
-Run docker:
+Push to ECR:
+
+```bash
+# authenticate
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/h1c6y7g8
+
+# tag as latest and push
+docker tag chinese-translation-api:latest public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
+docker push public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
+```
+
+Run the docker image as container:
 
 ```bash
 # regular
-docker run -d --name translation_server_container -p 5001:5001 chinese_translation_server
+docker run -d --name translation_server_container -p 5001:5001 chinese-translation-api
 
 # with env
-docker build -t chinese_translation_server . && docker run -e ENV_TYPE="production" -e DEPLOY_TYPE="server" --name translation_server_container_deploy -p 5001:5001 -d chinese_translation_server
+docker run -e ENV_TYPE="production" -e DEPLOY_TYPE="server" --name translation_server_container_deploy -p 5001:5001 -d chinese-translation-api
 ```
