@@ -24,7 +24,14 @@
    # Fill in the blanks
    gcloud container clusters get-credentials <CLUSTER_NAME> --zone <CLUSTER_ZONE> --project <PROJECT_ID>
    # Example command
-   gcloud container clusters get-credentials chinese-translation --zone us-south1-a --project prototyping-jxc1598
+   gcloud container clusters get-credentials chinese-translation-app --zone us-south1-a --project prototyping-jxc1598
+   ```
+
+   Make sure you are connected to the right cluster with:
+
+   ```bash
+   # https://stackoverflow.com/questions/38242062/how-to-get-kubernetes-cluster-name-from-k8s-api
+   kubectl config current-context
    ```
 
 ## Deploy
@@ -41,9 +48,17 @@ kubectl apply -f k8s/http-only
 Then, check if your deployment worked with:
 
 ```bash
+kubectl get pods
+
 kubectl get nodes -o wide
 
 kubectl get services
+```
+
+You can debug your deployment if it fails with:
+
+```bash
+kubectl describe pod
 ```
 
 You'll also need to configure the ingress controller.
@@ -51,6 +66,9 @@ You'll also need to configure the ingress controller.
 Install the nginx ingress controller with Helm:
 
 ```bash
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
 # install the nginx ingress controller and uses the ingress config
 helm install nginx-ingress ingress-nginx/ingress-nginx
 
@@ -98,7 +116,7 @@ Now you can navigate to the domain link with vanilla HTTP!
      --namespace cert-manager \
      --create-namespace \
      --version v1.10.1 \
-     # --set installCRDs=true
+     --set installCRDs=true
    ```
 
    Check that its running with:
