@@ -42,8 +42,9 @@ Push to ECR:
 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/h1c6y7g8
 
 # tag as latest and push
-docker tag chinese-translation-api:latest public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
-docker push public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
+# Remember to increment the version
+docker tag chinese-translation-api:latest public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.1
+docker push public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.1
 ```
 
 Run the docker image as container:
@@ -55,3 +56,7 @@ docker run -d --name translation_server_container -p 5001:5001 chinese-translati
 # with env
 docker run -e ENV_TYPE="production" -e DEPLOY_TYPE="server" --name translation_server_container_deploy -p 5001:5001 -d chinese-translation-api
 ```
+
+## Docker Releases
+
+- `v0.0.1`: Basic.
