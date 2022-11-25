@@ -131,6 +131,13 @@ At this point, you should go to the HTTP only version of the website and verify 
      --create-namespace \
      --version v1.10.1 \
      --set installCRDs=true
+
+   # Or if you are augmenting a previous installation:
+   helm upgrade --install \
+     cert-manager jetstack/cert-manager \
+     --namespace cert-manager \
+     --create-namespace \
+     --version v1.10.1 \
    ```
 
    Check that its running with:
