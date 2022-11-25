@@ -42,6 +42,7 @@ This covers the deploying the full stack application + NGINX ingress controller.
 
 ```bash
 # in /deploy
+kubectl apply -f k8s/app
 kubectl apply -f k8s/http-only
 ```
 
@@ -139,7 +140,7 @@ After a couple of minutes, you should be able to curl it:
 # need --insecure because it's going to be a staging cert
 curl -v --insecure https://YOUR_DOMAIN_NAME
 # Example
-curl -v --insecure https://chinesetranslationapi.com
+curl -v --insecure https://easiermtl.com
 ```
 
 And it should say that it has an insecure certificate.
@@ -153,13 +154,21 @@ kubectl apply -f k8s/production
 Now, you should be able to do a regular curl!
 
 ```bash
-curl -v https://chinesetranslationapi.com
+curl -v https://easiermtl.com
 ```
+
+If the paths are messed up, don't worry, there's one final step:
+
+```bash
+kubectl apply -f k8s/final
+```
+
+Now you're done!
 
 ## Debugging Commands
 
 - **Certs:**
   - `kubectl describe issuers.cert-manager.io letsencrypt-production`
   - `kubectl get certificates`
-  - `kubectl describe secret chiensetranslationapi-tls`
+  - `kubectl describe secret easiermtl-tls`
   - `kubectl get pods --namespace cert-manager`
