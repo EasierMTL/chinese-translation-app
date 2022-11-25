@@ -43,8 +43,8 @@ aws ecr-public get-login-password --region us-east-1 | docker login --username A
 
 # tag as latest and push
 # Remember to increment the version
-docker tag chinese-translation-api:latest public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.1
-docker push public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.1
+docker tag chinese-translation-api:latest public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.2
+docker push public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.2
 ```
 
 Run the docker image as container:
