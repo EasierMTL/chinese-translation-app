@@ -1,5 +1,15 @@
 # Deployment with Kubernetes
 
+- [Deployment with Kubernetes](#deployment-with-kubernetes)
+  - [Setup](#setup)
+  - [Deploy](#deploy)
+    - [1. HTTP Only + Ingress](#1-http-only--ingress)
+    - [2. Adding Domain](#2-adding-domain)
+    - [3. Setting Up Cert Manager](#3-setting-up-cert-manager)
+    - [4. Get the Staging SSL Certificate](#4-get-the-staging-ssl-certificate)
+    - [5. Get the Production SSL Certificate](#5-get-the-production-ssl-certificate)
+  - [Debugging Commands](#debugging-commands)
+
 ## Setup
 
 1. Create a cluster on GKE with your desired settings
@@ -13,8 +23,8 @@
    ```bash
    # Fill in the blanks
    gcloud container clusters get-credentials <CLUSTER_NAME> --zone <CLUSTER_ZONE> --project <PROJECT_ID>
-   # Example
-   gcloud container clusters get-credentials test-cluster-clone-1 --zone us-south1-a --project prototyping-jxc1598
+   # Example command
+   gcloud container clusters get-credentials chinese-translation --zone us-south1-a --project prototyping-jxc1598
    ```
 
 ## Deploy
@@ -25,7 +35,7 @@ This covers the deploying the full stack application + NGINX ingress controller.
 
 ```bash
 # in /deploy
-kubectl apply -f k8s/http-only/*
+kubectl apply -f k8s/http-only
 ```
 
 Then, check if your deployment worked with:
@@ -63,7 +73,7 @@ kubectl get ingress ingress-service
 - The displayed IP will be the same as the result of `echo $NGINX_INGRESS_IP`
 - note: `ingress-service` is just the name of the ingress service ([./k8s/ingress-service.yaml](./k8s/ingress-service.yaml))
 
-## 2. Adding Domain
+### 2. Adding Domain
 
 Get the IP address exposed by the NGINX ingress controller in Step 1.
 
@@ -71,4 +81,67 @@ Add that as an A record to the domain you want.
 
 Now you can navigate to the domain link with vanilla HTTP!
 
-## 3. Adding HTTPS
+### 3. Setting Up Cert Manager
+
+1. Create a namespace for the cert manager:
+
+   ```bash
+   kubectl create namespace cert-manager
+   ```
+
+2. Then install the jetstack cert manager custom resource definition:
+
+   ```bash
+   # From: https://cert-manager.io/docs/installation/helm/
+   helm install \
+     cert-manager jetstack/cert-manager \
+     --namespace cert-manager \
+     --create-namespace \
+     --version v1.10.1 \
+     # --set installCRDs=true
+   ```
+
+   Check that its running with:
+
+   ```bash
+   kubectl get pods --namespace cert-manager
+   ```
+
+### 4. Get the Staging SSL Certificate
+
+Do the staging certificate workflow first to ensure that everything is working properly.
+
+```bash
+kubectl apply -f k8s/staging
+```
+
+After a couple of minutes, you should be able to curl it:
+
+```bash
+# need --insecure because it's going to be a staging cert
+curl -v --insecure https://YOUR_DOMAIN_NAME
+# Example
+curl -v --insecure https://chinesetranslationapi.com
+```
+
+And it should say that it has an insecure certificate.
+
+### 5. Get the Production SSL Certificate
+
+```bash
+kubectl apply -f k8s/production
+```
+
+Now, you should be able to do a regular curl!
+
+```bash
+curl -v https://chinesetranslationapi.com
+```
+
+## Debugging Commands
+
+- **Certs:**
+  - `kubectl describe issuers.cert-manager.io letsencrypt-production`
+  - `kubectl get certificates`
+  - `kubectl describe secret chiensetranslationapi-tls`
+  - `kubectl get pods --namespace cert-manager`
