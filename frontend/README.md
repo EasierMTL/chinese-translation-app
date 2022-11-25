@@ -24,12 +24,18 @@ If you are testing functionality, make sure you are concurrently running the bac
 
 To build:
 
-```
-docker build -t chinese_translation_ui .
+```bash
+docker build -t jchen42703/ch-tl-ui:latest .
 ```
 
 To run:
 
+```bash
+docker run -d --name translation_container -p 3006:3006 jchen42703/ch-tl-ui:latest
 ```
-docker run -d --name translation_container -p 3006:3006 chinese_translation_ui
+
+To publish:
+
+```bash
+docker push jchen42703/ch-tl-ui:latest
 ```

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.2
+          ports:
+            - containerPort: 5001
+          resources:
+            requests:
+              memory: "5Gi"
+              cpu: "1"
+            limits:
+              memory: "8Gi"
+              cpu: "1"
+          env:
+            - name: NUM_WORKERS
+              value: "2"
+            - name: CLIENT_DOMAIN
+              value: easiermtl.com
+            - name: ENV_TYPE
+              value: production
+            # Quantized not working because for some reason gdown gets Access Denied on the GKE cluster
+            # - name: MODEL_TYPE
+            #   value: quantized_dynamic
+            - name: NO_PREPEND
+              value: "yes"

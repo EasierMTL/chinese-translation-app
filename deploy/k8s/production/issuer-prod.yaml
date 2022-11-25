@@ -1,0 +1,15 @@
+# issuer-lets-encrypt-production.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: jxc1598@case.edu # ❗ Replace this with your email address
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+      - http01:
+          ingress:
+            name: ingress-service

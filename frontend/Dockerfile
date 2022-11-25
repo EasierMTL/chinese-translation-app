@@ -5,6 +5,7 @@ FROM node:16
 
 ENV PORT=3006
 ENV REACT_APP_API_PORT=5001
+ENV REACT_APP_NODE_ENV=production
 
 # set the working direction
 WORKDIR /app
