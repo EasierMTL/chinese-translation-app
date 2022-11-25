@@ -17,3 +17,10 @@ spec:
           image: jchen42703/ch-tl-ui:latest
           ports:
             - containerPort: 3006
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "1"
+            limits:
+              memory: "1Gi"
+              cpu: "1"

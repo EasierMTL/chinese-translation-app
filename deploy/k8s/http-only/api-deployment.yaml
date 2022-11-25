@@ -14,9 +14,20 @@ spec:
     spec:
       containers:
         - name: api
-          image: jchen42703/chinese-translation-api:latest
+          image: public.ecr.aws/h1c6y7g8/chinese-translation-api:latest
           ports:
             - containerPort: 5001
+          resources:
+            requests:
+              memory: "5Gi"
+              cpu: "1"
+            limits:
+              memory: "8Gi"
+              cpu: "1"
+          env:
+            - name: NUM_WORKERS
+              value: "2"
+
           # env:
           #   - name: PG_HOST
           #     value: postgres-cluster-ip-service
