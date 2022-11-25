@@ -2,8 +2,9 @@ import os
 import gdown
 
 model_params = {
+    # https://drive.google.com/file/d/1-fqBWI7rpZK5DdZc2pRYTZfWuZEsBPhR/view?usp=share_link
     "quantized_dynamic": {
-        "file_id": "1Bhd2B3UoUuIr9hQROLsqhpzUp3-1vL12",
+        "file_id": "1-fqBWI7rpZK5DdZc2pRYTZfWuZEsBPhR",
         "save_path": "dynamic_quantized.pt",
     }
 }
