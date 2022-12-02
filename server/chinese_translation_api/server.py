@@ -9,7 +9,7 @@ from chinese_translation_api.routes import router
 
 torch.set_num_threads(1)
 
-API_VERSION = "v0.0.2"
+API_VERSION = "v0.0.3"
 
 
 def get_origins() -> List[str]:
