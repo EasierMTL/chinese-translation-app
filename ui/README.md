@@ -31,11 +31,14 @@ docker build -t jchen42703/ch-tl-ui:latest .
 To run:
 
 ```bash
-docker run -d --name translation_container -p 3006:3006 jchen42703/ch-tl-ui:latest
+docker run -p 3006:3006 jchen42703/ch-tl-ui:latest
 ```
 
-To publish:
+To publish to Docker Hub:
 
 ```bash
-docker push jchen42703/ch-tl-ui:latest
+UI_VERSION="v0.1.0"
+PUSH_REPO="jchen42703/ch-tl-ui:${UI_VERSION}"
+docker tag jchen42703/ch-tl-ui:latest $PUSH_REPO
+docker push $PUSH_REPO
 ```
