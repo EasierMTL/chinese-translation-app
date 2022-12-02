@@ -1,12 +1,13 @@
 import { Editor, EditorState } from "draft-js";
 import { useEffect, useState } from "react";
-import "../styles/styles.css";
+import "../../styles/Home.module.css";
 import {
   translateChineseToEnglish,
   translateEnglishToChinese,
-} from "../services/translate.service";
+} from "../../services/translate.service";
+import { NoSSR } from "../../components/NoSSR";
 
-const ToTranslateTextArea = ({ inputMode }) => {
+const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -36,8 +37,10 @@ const ToTranslateTextArea = ({ inputMode }) => {
 
   return (
     <div>
-      <Editor editorState={editorState} onChange={setEditorState} />
-      <span>Translated Text: {translatedText}</span>
+      <NoSSR>
+        <Editor editorState={editorState} onChange={setEditorState} />
+        <span>Translated Text: {translatedText}</span>
+      </NoSSR>
     </div>
   );
 };
