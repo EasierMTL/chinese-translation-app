@@ -1,14 +1,14 @@
-# Deployment with Kubernetes
+# Deployment with Kubernetes <!-- omit in toc -->
 
-- [Deployment with Kubernetes](#deployment-with-kubernetes)
-  - [Setup](#setup)
-  - [Deploy](#deploy)
-    - [1. HTTP Only + Ingress](#1-http-only--ingress)
-    - [2. Adding Domain](#2-adding-domain)
-    - [3. Setting Up Cert Manager](#3-setting-up-cert-manager)
-    - [4. Get the Staging SSL Certificate](#4-get-the-staging-ssl-certificate)
-    - [5. Get the Production SSL Certificate](#5-get-the-production-ssl-certificate)
-  - [Debugging Commands](#debugging-commands)
+- [Setup](#setup)
+- [Deploy](#deploy)
+  - [1. HTTP Only + Ingress](#1-http-only--ingress)
+  - [2. Adding Domain](#2-adding-domain)
+  - [3. Setting Up Cert Manager](#3-setting-up-cert-manager)
+  - [4. Get the Staging SSL Certificate](#4-get-the-staging-ssl-certificate)
+  - [5. Get the Production SSL Certificate](#5-get-the-production-ssl-certificate)
+- [Debugging Commands](#debugging-commands)
+- [Deploy Rolling API/UI Upgrades](#deploy-rolling-apiui-upgrades)
 
 ## Setup
 
@@ -192,3 +192,37 @@ Now you're done!
   - `kubectl get certificates`
   - `kubectl describe secret easiermtl-tls`
   - `kubectl get pods --namespace cert-manager`
+
+## Deploy Rolling API/UI Upgrades
+
+Whenever the API/UI updates, you should update the docker containers and environment variables in the deployments in [`./k8s/app`](./k8s/app).
+
+Make sure you've gone through the steps in [Setup](#setup).
+
+Then, simply apply through application changes with:
+
+```bash
+kubectl apply -f k8s/app
+```
+
+Check your deployment status with:
+
+```bash
+kubectl get pods
+kubectl get services
+```
+
+The general transition is:
+
+1. Creates new pod.
+2. Waits until the new pod is created.
+3. Then, terminates the old pod.
+
+You should end up with something like:
+
+```bash
+NAME                                                      READY   STATUS    RESTARTS   AGE
+api-deployment-5f865d6c7c-XXXXX                           1/1     Running   0          2m15s
+client-deployment-84966858d9-XXXXX                        1/1     Running   0          6d22h
+nginx-ingress-ingress-nginx-controller-6d7449f966-lfhwj   1/1     Running   0          6d23h
+```

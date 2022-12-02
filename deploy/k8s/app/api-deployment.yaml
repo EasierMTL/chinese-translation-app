@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.2
+          image: public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.3
           ports:
             - containerPort: 5001
           resources:
@@ -32,7 +32,7 @@ spec:
             - name: ENV_TYPE
               value: production
             # Quantized not working because for some reason gdown gets Access Denied on the GKE cluster
-            # - name: MODEL_TYPE
-            #   value: quantized_dynamic
+            - name: MODEL_TYPE
+              value: quantized_dynamic
             - name: NO_PREPEND
               value: "yes"
