@@ -20,6 +20,7 @@ optimum = "^1.1.0"
 gdown = "^4.4.0"
 datasets = "^2.1.0"
 tqdm = "^4.64.0"
+asian-mtl = "^0.1.2"
 
 [tool.poetry.dev-dependencies]
 gunicorn = "^20.1.0"
