@@ -4,7 +4,7 @@ Full-stack web application to automatically translate Chinese to English (and vi
 
 Hosted at: https://easiermtl.com/
 
-<video autoPlay={true} loop={true} muted={true} playsInline={true}><source src="./docs/videos/easiermtl_demo.mp4" type="video/mp4" /></video>
+https://user-images.githubusercontent.com/34604336/205464990-cbc08d4c-ee56-4e15-9704-5ab9ee27931f.mp4
 
 ## Table of Contents
 
