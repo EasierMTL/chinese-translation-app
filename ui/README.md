@@ -37,8 +37,8 @@ docker run -p 3006:3006 jchen42703/ch-tl-ui:latest
 To publish to Docker Hub:
 
 ```bash
-UI_VERSION="v0.2.0"
-PUSH_REPO="jchen42703/ch-tl-ui:${UI_VERSION}"
+UI_VERSION=$(node -p -e "require('./package.json').version")
+PUSH_REPO="jchen42703/ch-tl-ui:v${UI_VERSION}"
 docker tag jchen42703/ch-tl-ui:latest $PUSH_REPO
 docker push $PUSH_REPO
 ```
