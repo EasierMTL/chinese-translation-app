@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.3
+          image: public.ecr.aws/h1c6y7g8/chinese-translation-api:v0.0.4
           ports:
             - containerPort: 5001
           resources:
