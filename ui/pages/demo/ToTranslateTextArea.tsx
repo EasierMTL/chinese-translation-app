@@ -13,6 +13,36 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
 
   const [translatedText, setTranslatedText] = useState("");
 
+  // Parses translation HTTP request and other miscellaneous errors into a human-readable message
+  const handleError = (err: unknown) => {
+    let msg: string;
+    if (err instanceof HTTPError) {
+      // Raise error toast
+      switch (err.status) {
+        case 429:
+          msg =
+            "Sent too many translations. Please wait a couple seconds before translating again!";
+          break;
+        case 400:
+          msg =
+            "Text too long (>512 characters). Please try again with less text.";
+          break;
+        default:
+          msg = err.message;
+          break;
+      }
+    } else if (err instanceof Error) {
+      if (err.message == "Failed to fetch") {
+        msg = "Server down. Please try again later.";
+      } else {
+        msg = err.message;
+      }
+    } else {
+      msg = `Unknown error translating occurred. Please try again later.`;
+    }
+    return msg;
+  };
+
   const translate = async () => {
     let prediction;
     const editorText = editorState.getCurrentContent().getPlainText();
@@ -20,31 +50,7 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
       prediction = await translateWithAPI(editorText, inputMode);
       setTranslatedText(prediction);
     } catch (err: unknown) {
-      let msg: string;
-      if (err instanceof HTTPError) {
-        // Raise error toast
-        switch (err.status) {
-          case 429:
-            msg =
-              "Sent too many translations. Please wait a couple seconds before translating again!";
-            break;
-          case 400:
-            msg =
-              "Text too long (>512 characters). Please try again with less text.";
-            break;
-          default:
-            msg = err.message;
-            break;
-        }
-      } else if (err instanceof Error) {
-        if (err.message == "Failed to fetch") {
-          msg = "Server down. Please try again later.";
-        } else {
-          msg = err.message;
-        }
-      } else {
-        msg = `Unknown error translating occurred. Please try again later.`;
-      }
+      const msg = handleError(err);
       toast.error(msg, {
         duration: 15000,
       });
