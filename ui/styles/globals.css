@@ -23,8 +23,13 @@ div.DraftEditor-root {
   border: 1px solid #000;
   background-color: beige;
   overflow-y: auto;
+  padding: 3%;
+  min-height: 45vh;
 }
-div.DraftEditor-editorContainer,
+div.DraftEditor-editorContainer {
+  height: 100%;
+}
+
 div.public-DraftEditor-content {
   height: 100%;
 }

@@ -1,4 +1,4 @@
-import { Editor, EditorState } from "draft-js";
+import { ContentState, Editor, EditorState } from "draft-js";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import "../../styles/Home.module.css";
@@ -7,9 +7,19 @@ import { NoSSR } from "../../components/NoSSR";
 import { HTTPError } from "../../utils/err";
 
 const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState(() => {
+    // Initialize with default text
+    let defaultText: string;
+    if (inputMode == "ch") {
+      defaultText = "在此处键入以翻译您的文本.";
+    } else {
+      defaultText = "Type here to translate your text.";
+    }
+
+    return EditorState.createWithContent(
+      ContentState.createFromText(defaultText)
+    );
+  });
 
   const [translatedText, setTranslatedText] = useState("");
 
@@ -67,14 +77,16 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
   }, [editorState.getCurrentContent().getPlainText()]);
 
   return (
-    <div>
+    <div className="my-4">
       <div>
         <Toaster />
       </div>
-      <NoSSR>
-        <Editor editorState={editorState} onChange={setEditorState} />
-        <span>Translated Text: {translatedText}</span>
-      </NoSSR>
+      <div className="grid grid-cols-2 gap-x-5">
+        <NoSSR>
+          <Editor editorState={editorState} onChange={setEditorState} />
+          <span>Translated Text: {translatedText}</span>
+        </NoSSR>
+      </div>
     </div>
   );
 };

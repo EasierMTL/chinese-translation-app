@@ -15,7 +15,7 @@ export default function Home() {
           content="Translating from Chinese to English with AI."
         />
       </Head>
-      <div className="mt-4 mx-16">
+      <div className="py-4 mx-16">
         <h1 className="text-3xl font-bold">
           Translation with Deep Learning Models Demo
         </h1>
@@ -38,10 +38,8 @@ export default function Home() {
         <h1 className="text-2xl font-bold">Translate English to Chinese</h1>
         <span>Adding a period will make the translations more accurate!</span>
         <br />
-        <span>Type below:</span>
         <ToTranslateTextArea inputMode={"en"}></ToTranslateTextArea>
         <h1 className="text-2xl font-bold">Translate Chinese to English</h1>
-        <span>Type below:</span>
         <ToTranslateTextArea inputMode={"ch"}></ToTranslateTextArea>
       </div>
     </>
