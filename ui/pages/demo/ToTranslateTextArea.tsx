@@ -1,4 +1,10 @@
-import { ContentState, Editor, EditorState, Modifier } from "draft-js";
+import {
+  ContentState,
+  Editor,
+  EditorState,
+  Modifier,
+  getDefaultKeyBinding,
+} from "draft-js";
 import React, { useCallback, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { AiOutlineCopy } from "react-icons/ai";
@@ -210,12 +216,12 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
       const currentContentLength = currentContent.getPlainText("").length;
       const selectedTextLength = getLengthOfSelectedText();
       // Prevent Enter from creating new line if it will cause it to exceed the max length
-      if (currentContentLength - selectedTextLength + 1 > MAX_LENGTH - 1) {
+      if (currentContentLength - selectedTextLength > MAX_LENGTH - 1) {
         return "handled";
       }
     }
 
-    return null;
+    return getDefaultKeyBinding(e);
   };
 
   return (
