@@ -1,10 +1,8 @@
 """The main endpoint(s) that will be tested
 """
-import os
-
 from starlette.responses import JSONResponse
 from pydantic import BaseModel
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from asian_mtl.models.base import (
     ChineseToEnglishTranslator,
     EnglishToChineseTranslator,
@@ -40,6 +38,9 @@ def create_translator_router(deploy_type: str = "server",
     async def run_prediction(req: ChineseTextToTranslateReq) -> JSONResponse:
         """Runs the model prediction"""
         print(req)
+        if len(req.text) > 5000:
+            raise HTTPException(status_code=400,
+                                detail="Requested text is too long.")
         prediction = zh_translator.predict(req.text)
         return {"prediction": prediction}
 
@@ -65,6 +66,9 @@ def create_translator_router(deploy_type: str = "server",
         async def run_english_to_chinese_pred(
             req: EnglishToChineseTranslateReq,) -> JSONResponse:
             """Runs the model prediction"""
+            if len(req.text) > 5000:
+                raise HTTPException(status_code=400,
+                                    detail="Requested text is too long.")
             prediction = en_translator.predict(req.text)
             return {"prediction": prediction}
 
