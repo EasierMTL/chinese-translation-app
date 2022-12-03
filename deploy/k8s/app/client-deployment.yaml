@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: jchen42703/ch-tl-ui:v0.1.0
+          image: jchen42703/ch-tl-ui:v0.2.0
           ports:
             - containerPort: 3006
           resources:
