@@ -19,12 +19,25 @@ a {
   box-sizing: border-box;
 }
 
-div.DraftEditor-root {
-  border: 1px solid #000;
-  background-color: beige;
+div.translated-text-container {
+  @apply p-3 rounded-t-md border-black border-t-2 border-l-2 border-r-2;
+  height: 100%;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
   overflow-y: auto;
+  word-break: break-word;
 }
-div.DraftEditor-editorContainer,
+
+div.DraftEditor-root {
+  @apply p-2 rounded-t-md border-black border-t-2 border-l-2 border-r-2;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  overflow-y: auto;
+  min-height: 45vh;
+  word-break: break-word;
+}
+div.DraftEditor-editorContainer {
+  height: 100%;
+}
+
 div.public-DraftEditor-content {
   height: 100%;
 }
