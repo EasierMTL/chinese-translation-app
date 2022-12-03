@@ -83,31 +83,29 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
       <div>
         <Toaster />
       </div>
-      <div className="flex flex-col w-full">
-        <NoSSR>
-          <div className="grid grid-cols-2 gap-x-5">
-            <div className="flex flex-col">
-              <Editor editorState={editorState} onChange={setEditorState} />
-              <TextDisplayFooter>
-                {editorState.getCurrentContent().getPlainText().length} / 512
-              </TextDisplayFooter>
-            </div>
-            <div className="flex flex-col">
-              <div className="translated-text-container">{translatedText}</div>
-              <TextDisplayFooter>
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(translatedText);
-                    toast.success("Copied translated text!");
-                  }}
-                >
-                  <AiOutlineCopy size={28}></AiOutlineCopy>
-                </button>
-              </TextDisplayFooter>
-            </div>
+      <NoSSR>
+        <div className="grid grid-cols-2 gap-x-5">
+          <div className="flex flex-col">
+            <Editor editorState={editorState} onChange={setEditorState} />
+            <TextDisplayFooter>
+              {editorState.getCurrentContent().getPlainText().length} / 512
+            </TextDisplayFooter>
           </div>
-        </NoSSR>
-      </div>
+          <div className="flex flex-col">
+            <div className="translated-text-container">{translatedText}</div>
+            <TextDisplayFooter>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(translatedText);
+                  toast.success("Copied translated text!");
+                }}
+              >
+                <AiOutlineCopy size={28}></AiOutlineCopy>
+              </button>
+            </TextDisplayFooter>
+          </div>
+        </div>
+      </NoSSR>
     </div>
   );
 };
