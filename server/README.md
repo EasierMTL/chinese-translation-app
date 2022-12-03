@@ -20,6 +20,9 @@ To start the api:
 poetry run uvicorn chinese_translation_api.server:app --workers 1 --reload --port=5001
 
 # Quantized
+MODEL_TYPE=quantized_dynamic poetry run uvicorn chinese_translation_api.server:app --workers 1 --reload --port=5001
+
+# Server-Only for Load Testing
 MODEL_TYPE=quantized_dynamic DEPLOY_TYPE=server poetry run uvicorn chinese_translation_api.server:app --workers 1 --reload --port=5001
 ```
 
