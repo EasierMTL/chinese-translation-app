@@ -5,6 +5,7 @@ import "../../styles/Home.module.css";
 import { translateWithAPI } from "../../services/translate.service";
 import { NoSSR } from "../../components/NoSSR";
 import { HTTPError } from "../../utils/err";
+import TextDisplayFooter from "./TextDisplayFooter";
 
 const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
   const [editorState, setEditorState] = useState(() => {
@@ -81,10 +82,20 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
       <div>
         <Toaster />
       </div>
-      <div className="grid grid-cols-2 gap-x-5">
+      <div className="flex flex-col w-full">
         <NoSSR>
-          <Editor editorState={editorState} onChange={setEditorState} />
-          <div className="translated-text-container">{translatedText}</div>
+          <div className="grid grid-cols-2 gap-x-5">
+            <div className="flex flex-col">
+              <Editor editorState={editorState} onChange={setEditorState} />
+              <TextDisplayFooter>
+                {editorState.getCurrentContent().getPlainText().length} / 512
+              </TextDisplayFooter>
+            </div>
+            <div className="flex flex-col">
+              <div className="translated-text-container">{translatedText}</div>
+              <TextDisplayFooter>N/A</TextDisplayFooter>
+            </div>
+          </div>
         </NoSSR>
       </div>
     </div>
