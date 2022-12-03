@@ -1,8 +1,15 @@
 import { config } from "../config/config";
+import { HTTPError } from "../utils/err";
 
-export async function translateChineseToEnglish(word: string) {
+export async function translateWithAPI(word: string, inputMode: "ch" | "en") {
   const { baseUrl } = config;
-  const fetchUrl = `${baseUrl}/api/translate/chinese`;
+  let fetchUrl = "";
+  if (inputMode == "ch") {
+    fetchUrl = `${baseUrl}/api/translate/chinese`;
+  } else {
+    fetchUrl = `${baseUrl}/api/translate/english`;
+  }
+
   const res = await fetch(fetchUrl, {
     method: "POST",
     headers: {
@@ -10,21 +17,11 @@ export async function translateChineseToEnglish(word: string) {
     },
     body: JSON.stringify({ text: word }),
   });
+  const body = await res.json();
+  if (res.status != 200) {
+    throw new HTTPError(res.status, res.statusText);
+  }
 
-  const { prediction } = await res.json();
-  return prediction;
-}
-
-export async function translateEnglishToChinese(word: string) {
-  const { baseUrl } = config;
-  const res = await fetch(`${baseUrl}/api/translate/english`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ text: word }),
-  });
-
-  const { prediction } = await res.json();
+  const { prediction } = body;
   return prediction;
 }
