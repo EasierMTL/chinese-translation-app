@@ -1,5 +1,5 @@
 import { ContentState, Editor, EditorState, Modifier } from "draft-js";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { AiOutlineCopy } from "react-icons/ai";
 import "../../styles/Home.module.css";
@@ -139,9 +139,8 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
     const currentContent = editorState.getCurrentContent();
     const currentContentLength = currentContent.getPlainText("").length;
     const selectedTextLength = getLengthOfSelectedText();
-
     if (currentContentLength - selectedTextLength > MAX_LENGTH - 1) {
-      console.log("you can type max ten characters");
+      console.log(`you can type max ${MAX_LENGTH} characters`);
 
       return "handled";
     }
@@ -204,6 +203,21 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
     return "not-handled";
   };
 
+  // Same as handleInput, but considers the extra character caused by Enter
+  const handleEnter = (e: React.KeyboardEvent) => {
+    if (e.key == "Enter") {
+      const currentContent = editorState.getCurrentContent();
+      const currentContentLength = currentContent.getPlainText("").length;
+      const selectedTextLength = getLengthOfSelectedText();
+      // Prevent Enter from creating new line if it will cause it to exceed the max length
+      if (currentContentLength - selectedTextLength + 1 > MAX_LENGTH - 1) {
+        return "handled";
+      }
+    }
+
+    return null;
+  };
+
   return (
     <div className="my-4">
       <div>
@@ -217,6 +231,7 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
               onChange={onEditorTextChange}
               handleBeforeInput={handleBeforeInput}
               handlePastedText={handlePastedText}
+              keyBindingFn={handleEnter}
             />
             <TextDisplayFooter>
               {editorState.getCurrentContent().getPlainText().length} / 512
