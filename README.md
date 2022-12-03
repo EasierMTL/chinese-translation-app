@@ -1,6 +1,6 @@
 # Chinese-English Translation Web App
 
-Full-stack web application to automatically translate Chinese to English (and vice-versa) with React/FastAPI and deep learning models (BERT) and automated cloud API load-testing with AWS EC2, Google Compute Engine, Terraform, and Locust.
+Full-stack web application to automatically translate Chinese to English (and vice-versa) with React/Next.js/FastAPI and deep learning models (BERT) and automated cloud API load-testing with AWS EC2, Google Compute Engine, Terraform, and Locust.
 
 Hosted at: https://easiermtl.com/
 
@@ -8,7 +8,7 @@ Hosted at: https://easiermtl.com/
 
 ## Table of Contents
 
-- [Frontend](./frontend)
+- [Next.js UI](./ui)
 - [Python](./server)
   - [Backend REST API](./server/README.md)
   - [Model Development & Evaluation](https://github.com/EasierMTL/asian_mtl)
@@ -42,12 +42,12 @@ Rest will be installed as long as you follow the documentation.
 
 The full deployment instructions to Google Kubernetes Engine with K8s and Helm are located [here](./deploy/KUBERNETES.md).
 
-If you don't want to use Kubernetes or want to run locally, run the `frontend` and `server` separately. See the individual READMEs in [`frontend`](./frontend) and [`server`](./server) for more information.
+If you don't want to use Kubernetes or want to run locally, run the `ui` and `server` separately. See the individual READMEs in [`ui`](./ui) and [`server`](./server) for more information.
 
 ## Tech Stack
 
 - Frontend
-  - React, draft.js
+  - React, Next.js, draft.js
 - Backend
   - Python, FastAPI
 - Model Development
