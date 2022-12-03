@@ -1,6 +1,7 @@
 import { ContentState, Editor, EditorState } from "draft-js";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { AiOutlineCopy } from "react-icons/ai";
 import "../../styles/Home.module.css";
 import { translateWithAPI } from "../../services/translate.service";
 import { NoSSR } from "../../components/NoSSR";
@@ -93,7 +94,16 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
             </div>
             <div className="flex flex-col">
               <div className="translated-text-container">{translatedText}</div>
-              <TextDisplayFooter>N/A</TextDisplayFooter>
+              <TextDisplayFooter>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(translatedText);
+                    toast.success("Copied translated text!");
+                  }}
+                >
+                  <AiOutlineCopy size={28}></AiOutlineCopy>
+                </button>
+              </TextDisplayFooter>
             </div>
           </div>
         </NoSSR>
