@@ -38,7 +38,7 @@ def create_translator_router(deploy_type: str = "server",
     async def run_prediction(req: ChineseTextToTranslateReq) -> JSONResponse:
         """Runs the model prediction"""
         print(req)
-        if len(req.text) > 5000:
+        if len(req.text) > 512:
             raise HTTPException(status_code=400,
                                 detail="Requested text is too long.")
         prediction = zh_translator.predict(req.text)
@@ -66,7 +66,7 @@ def create_translator_router(deploy_type: str = "server",
         async def run_english_to_chinese_pred(
             req: EnglishToChineseTranslateReq,) -> JSONResponse:
             """Runs the model prediction"""
-            if len(req.text) > 5000:
+            if len(req.text) > 512:
                 raise HTTPException(status_code=400,
                                     detail="Requested text is too long.")
             prediction = en_translator.predict(req.text)
