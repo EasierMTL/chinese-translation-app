@@ -84,7 +84,7 @@ const ToTranslateTextArea = ({ inputMode }: { inputMode: "ch" | "en" }) => {
       <div className="grid grid-cols-2 gap-x-5">
         <NoSSR>
           <Editor editorState={editorState} onChange={setEditorState} />
-          <span>Translated Text: {translatedText}</span>
+          <div className="translated-text-container">{translatedText}</div>
         </NoSSR>
       </div>
     </div>
